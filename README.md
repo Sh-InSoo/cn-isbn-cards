@@ -19,7 +19,7 @@
   repo clone → data/ 최신 월 JSON 확인
     · JSON 없음            → no-op (조용히 종료)
     · 이미 Slack에 게시됨  → no-op (중복 방지: 채널 검색)
-    · 신규 완성본          → Claude가 분석·요약 → Slack Canvas (#cn-isbn)
+    · 신규 완성본          → Claude가 분석·요약 → Slack Canvas (#match_cn_isbn)
 ```
 
 NAS는 중국 사이트 접근·렌더링·원본 카드 전송을 담당하고, 클라우드 routine은
@@ -63,4 +63,11 @@ NAS 환경변수:
 ## 클라우드 routine
 
 `https://claude.ai/code/routines` 에서 관리. cron `0 10 22-31 * *` (UTC) = 매월
-22~31일 18:00 Asia/Shanghai. 소스: 이 GitHub 레포. 커넥터: Slack.
+22~31일 18:00 Asia/Shanghai. 소스: 이 GitHub 레포
+(`https://github.com/Sh-InSoo/cn-isbn-cards`). 커넥터: Slack(`#match_cn_isbn`).
+모델 claude-sonnet-4-6. routine ID `trig_012kD3EST1CPi1fDbqe42oCA`.
+
+routine은 **분석 Canvas만** 발행한다. 인스타 카드뉴스 5장(PNG)은 NAS의
+`image_gen.py`가 렌더링하고 `slack_client.py`(봇 토큰 `files_upload_v2`)로 같은
+채널에 업로드한다 — 카드 생성·업로드는 NAS 책임, Canvas는 클라우드 책임으로 분리.
+(Slack 커넥터(MCP)에는 파일 업로드 도구가 없어 클라우드 routine은 이미지를 못 올린다.)
