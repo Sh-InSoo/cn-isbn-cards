@@ -1,0 +1,19 @@
+# Runtime state / logs (NAS-local, not for the repo)
+data/state.json
+data/cards/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Keep: data/cn-isbn-YYYYMM.json handoff files ARE tracked (routine reads them)
+!data/cn-isbn-*.json
