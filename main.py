@@ -135,6 +135,16 @@ def main():
         except Exception as e:
             logger.error(f"Card generation/upload failed: {e}", exc_info=True)
 
+    # ── Handoff to the cloud routine ──────────────────────────────────────────
+    # Push the computed data to the GitHub repo so the cloud routine can read it
+    # and publish the Slack Canvas summary. A push failure must not abort the run
+    # (the text report + cards already reached Slack); re-push is idempotent.
+    try:
+        from data_export import export_and_push
+        export_and_push(year, month, results, ytd, comparison)
+    except Exception as e:
+        logger.error(f"data_export handoff failed (routine summary may be skipped): {e}")
+
     state.mark_sent(year_month)
     logger.info(f"cn-isbn complete for {year}/{month:02d}")
 
