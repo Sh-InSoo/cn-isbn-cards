@@ -30,3 +30,37 @@
   Canvas 자동 발행하는지 확인.
 - ⬜ (선택) **gh CLI 설치** — 향후 repo 작업 편의를 위해. winget 머신범위 설치가 권한
   승격을 요구해 이번엔 GCM로 우회함.
+
+## Session status (2026-06-15)
+
+### Done today
+- **환경 비교 분석** — claude.ai 수작업 월간 카드뉴스 워크플로(리서치→카피→HTML 카드)를
+  Code vs Cowork, CLI vs 데스크탑으로 비교. 결론: 저작·반복은 **데스크탑 Code + 이 repo**,
+  무인 실행은 CLI/NAS. 카드 디자인의 시각 피드백 루프가 환경 선택의 핵심.
+- **아키텍처 결정(AskUserQuestion)** — ① 렌더링 = **HTML 템플릿 + Playwright**,
+  ② 편집 콘텐츠 = **클라우드 routine이 editorial JSON 생성** → NAS가 읽어 렌더·업로드.
+- **현황 파악** — repo의 `cardnews_pangho_april2026.html`(983줄 정적)과 구 PIL
+  `image_gen.py`는 별개 디자인. `cn-isbn-202604-card*.png` 기준 PNG는 **구 PIL 단순본**
+  (스크랩 원본 그대로의 표)으로 확인 → 픽셀 비교 대상 아님, 리치 디자인으로 교체가 목표.
+- **`templates/cards.html.j2` 생성** — 4월 HTML을 Jinja2로 변수화(5장 카드 + 선택적
+  소셜 포스트). CSS는 원본 그대로, 본문 데이터만 파라미터화. MoM ▲/▼ 색상 분기 추가.
+- **`render_cards.py` 생성** — 스크랩 JSON + editorial JSON 병합 → Jinja2 → Playwright로
+  각 `#cardN`을 1080² PNG 캡처. `--month YYYYMM` / `--html-only` / `--scrape/--editorial` 옵션.
+- **샘플 데이터** — `data/cn-isbn-202604.json`(NPPA 수치: 수입7/국산147/변경13, YTD·비교)
+  + `data/cn-isbn-202604-editorial.json`(스포트라이트 ARC Raiders·遗忘之海, 영문명·개발사·
+  분석 등 편집 레이어). YoY/누적 %·증감방향은 render_cards가 수치에서 자동 계산.
+- **jinja2 3.1.6 설치 + 템플릿 HTML 렌더 검증** — `--html-only` 성공(31KB). PyPI 네트워크
+  타임아웃 잦아 `--default-timeout=120 --retries 8` 필요.
+
+### Open / 미완 (다음 세션 블로커)
+- ⬜ **playwright 설치 완료 + `playwright install chromium`** — 설치 중 PyPI 타임아웃으로
+  재시도 진행 중이었음.
+- ⬜ **4월 5장 PNG 렌더 후 시각 검증** — `python render_cards.py --month 202604`로 리치
+  디자인(스포트라이트·영문명·개발사·분석)이 claude.ai 결과와 일치하는지 확인.
+- ⬜ **오프라인 폰트 임베드** — 템플릿이 Google Fonts CDN 의존. NAS 망 제약 대비
+  @font-face로 로컬 Pretendard/PingFang 임베드 필요(중문 글리프 커버리지 포함).
+- ⬜ **오케스트레이션(STEP 2)** — 흐름 순서 변경: NAS 스크랩·push → routine이 editorial
+  JSON 생성·push → **다음 NAS 실행**이 editorial 감지 시 리치 카드 렌더·업로드.
+  `main.py` 상태머신(카드 발송 지연/분리) + routine 프롬프트(editorial JSON 산출) 수정.
+- ⬜ **`requirements.txt`에 jinja2/playwright 추가** + Dockerfile에 chromium 설치 반영.
+- ⬜ **구 PIL `image_gen.py` 거취 결정** — HTML 렌더로 대체 vs 폴백(Playwright 불가 시)으로 유지.

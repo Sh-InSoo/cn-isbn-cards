@@ -2,13 +2,23 @@
 main.py – cn-isbn entry point
 
 Daily check (from day 22) for the monthly NPPA (China) game license announcements.
-Exits cleanly (code 0) without sending if:
-  - Day < START_DAY
-  - Already sent for this year-month
-  - Not all three announcements published yet
 
-New:  After the text report, generates 5 Instagram-style card images
-      and uploads them to the same Slack channel.
+Two-phase monthly flow (see README):
+  Phase 1 — report & handoff (runs once, the day all three announcements appear):
+      scrape → Slack text report → push  data/cn-isbn-YYYYMM.json  (numbers only)
+  Phase 2 — cloud routine (external): reads that JSON, publishes the analysis
+      Canvas, and pushes  data/cn-isbn-YYYYMM-editorial.json  back to the repo.
+  Phase 3 — rich cards (this script, on a LATER daily run): once the editorial
+      JSON is present, render the 5-card carousel and upload it to Slack.
+      Handled by card_publisher.publish_cards_if_ready().
+
+Because the editorial layer is produced by the routine AFTER the Phase-1 push,
+the cards arrive on the next NAS run, not the same one — the daily cron retries
+until the editorial JSON shows up.
+
+Exits cleanly (code 0) without doing work if:
+  - Day < START_DAY
+  - The three announcements aren't all published yet (Phase 1 retries tomorrow)
 """
 
 from __future__ import annotations
@@ -34,6 +44,69 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _run_report(year: int, month: int, year_month: str,
+                state: StateManager, slack: SlackClient) -> bool:
+    """Phase 1: scrape, send the text report, and push the handoff JSON.
+
+    Returns True if the report was sent (all three announcements published),
+    False if not all three are out yet (caller should retry on a later run).
+    """
+    scraper = NPPAScraper()
+    results: dict[str, dict | None] = {}
+    for category in ("import", "domestic", "change"):
+        results[category] = scraper.get_monthly_data(category, year, month)
+
+    missing = [cat for cat, d in results.items() if d is None]
+    if missing:
+        labels = {"import": "进口", "domestic": "国产", "change": "变更"}
+        logger.info(
+            f"Not yet published: {', '.join(labels[m] for m in missing)}. "
+            "Will retry tomorrow."
+        )
+        return False
+
+    logger.info("All three announcements found. Computing YTD...")
+    ytd_cache = state.get_ytd_counts(year)
+    ytd: dict[str, int] = {}
+    for category in ("import", "domestic", "change"):
+        cache_key = f"{category}_{year_month}"
+        if cache_key in ytd_cache:
+            ytd[category] = ytd_cache[cache_key]
+        else:
+            logger.info(f"Counting YTD for {category}...")
+            ytd[category] = scraper.count_ytd(category, year, month)
+            ytd_cache[cache_key] = ytd[category]
+    state.save_ytd_counts(year, ytd_cache)
+    logger.info(
+        f"YTD counts: import={ytd['import']}, domestic={ytd['domestic']}, "
+        f"change={ytd['change']}"
+    )
+
+    # ── Text report ────────────────────────────────────────────────────────
+    logger.info(f"Sending text report to Slack channel {Config.SLACK_CHANNEL}...")
+    slack.send_report(year=year, month=month, results=results, ytd=ytd)
+
+    # ── Comparison data (MoM / YoY / YTD-prev) for the card stats ───────────
+    comparison: dict = {}
+    try:
+        from comparison import get_comparison_counts
+        logger.info("Computing MoM / YoY comparison data...")
+        comparison = get_comparison_counts(scraper, year, month)
+    except Exception as e:
+        logger.warning(f"Comparison data failed (cards will omit YoY/MoM): {e}")
+
+    # ── Handoff to the cloud routine ────────────────────────────────────────
+    # Push the numbers so the routine can publish the Canvas AND produce the
+    # editorial JSON that Phase 3 needs. A push failure must not abort the run.
+    try:
+        from data_export import export_and_push
+        export_and_push(year, month, results, ytd, comparison)
+    except Exception as e:
+        logger.error(f"data_export handoff failed (routine may be skipped): {e}")
+
+    return True
+
+
 def main():
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
@@ -54,99 +127,38 @@ def main():
 
     if day < Config.START_DAY:
         logger.info(
-            f"Today is the {day}th. Monitoring starts on the {Config.START_DAY}th. Exiting."
+            f"Today is the {day}th. Monitoring starts on the "
+            f"{Config.START_DAY}th. Exiting."
         )
         return
 
     Config.validate()
     state = StateManager(Config.STATE_FILE)
-    if state.already_sent(year_month):
-        logger.info(f"Report for {year_month} already sent. Exiting.")
-        return
-
-    scraper = NPPAScraper()
-    results: dict[str, dict | None] = {}
-
-    for category in ("import", "domestic", "change"):
-        results[category] = scraper.get_monthly_data(category, year, month)
-
-    missing = [cat for cat, d in results.items() if d is None]
-    if missing:
-        labels = {"import": "进口", "domestic": "国产", "change": "变更"}
-        logger.info(
-            f"Not yet published: {', '.join(labels[m] for m in missing)}. "
-            "Will retry tomorrow."
-        )
-        return
-
-    logger.info("All three announcements found. Computing YTD...")
-
-    ytd_cache = state.get_ytd_counts(year)
-    ytd: dict[str, int] = {}
-    for category in ("import", "domestic", "change"):
-        cache_key = f"{category}_{year_month}"
-        if cache_key in ytd_cache:
-            ytd[category] = ytd_cache[cache_key]
-        else:
-            logger.info(f"Counting YTD for {category}...")
-            ytd[category] = scraper.count_ytd(category, year, month)
-            ytd_cache[cache_key] = ytd[category]
-    state.save_ytd_counts(year, ytd_cache)
-    logger.info(
-        f"YTD counts: import={ytd['import']}, domestic={ytd['domestic']}, change={ytd['change']}"
-    )
-
-    # ── Text report ───────────────────────────────────────────────────────────
-    logger.info(f"Sending text report to Slack channel {Config.SLACK_CHANNEL}...")
     slack = SlackClient(Config.SLACK_BOT_TOKEN, Config.SLACK_CHANNEL)
-    slack.send_report(year=year, month=month, results=results, ytd=ytd)
 
-    # ── Comparison data for card stats ────────────────────────────────────────
-    comparison: dict = {}
-    skip_cards = os.environ.get("SKIP_CARDS", "").lower() in ("1", "true", "yes")
+    # ── Phase 1: report & handoff (once per month) ──────────────────────────
+    if not state.already_sent(year_month):
+        if not _run_report(year, month, year_month, state, slack):
+            return  # not all three published yet — retry on a later run
+        state.mark_sent(year_month)
+        logger.info(f"cn-isbn report complete for {year}/{month:02d}")
+    else:
+        logger.info(
+            f"Report for {year_month} already sent — checking card status..."
+        )
 
-    if not skip_cards:
-        try:
-            from comparison import get_comparison_counts
-            logger.info("Computing MoM / YoY comparison data...")
-            comparison = get_comparison_counts(scraper, year, month)
-        except Exception as e:
-            logger.warning(f"Comparison data failed (cards will omit YoY/MoM): {e}")
+    # ── Phase 3: rich cards (waits for the routine's editorial JSON) ─────────
+    # Skippable via SKIP_CARDS for text-only runs / debugging.
+    if os.environ.get("SKIP_CARDS", "").lower() in ("1", "true", "yes"):
+        logger.info("[cards] SKIP_CARDS set — skipping card publish.")
+        return
 
-        # ── Image card generation ─────────────────────────────────────────────
-        try:
-            from image_gen import generate_cards
-            logger.info("Generating Instagram card images...")
-            card_paths = generate_cards(
-                year=year,
-                month=month,
-                results=results,
-                ytd=ytd,
-                comparison=comparison,
-                output_dir=Config.CARDS_DIR,
-            )
-            logger.info(f"Generated {len(card_paths)} cards: {card_paths}")
-
-            # ── Card upload to Slack ──────────────────────────────────────────
-            logger.info("Uploading cards to Slack...")
-            slack.upload_cards(year=year, month=month, card_paths=card_paths)
-        except ImportError:
-            logger.warning("Pillow not installed — skipping card generation")
-        except Exception as e:
-            logger.error(f"Card generation/upload failed: {e}", exc_info=True)
-
-    # ── Handoff to the cloud routine ──────────────────────────────────────────
-    # Push the computed data to the GitHub repo so the cloud routine can read it
-    # and publish the Slack Canvas summary. A push failure must not abort the run
-    # (the text report + cards already reached Slack); re-push is idempotent.
     try:
-        from data_export import export_and_push
-        export_and_push(year, month, results, ytd, comparison)
+        from card_publisher import publish_cards_if_ready
+        status = publish_cards_if_ready(year, month, slack=slack)
+        logger.info(f"[cards] {status}")
     except Exception as e:
-        logger.error(f"data_export handoff failed (routine summary may be skipped): {e}")
-
-    state.mark_sent(year_month)
-    logger.info(f"cn-isbn complete for {year}/{month:02d}")
+        logger.error(f"[cards] publish failed: {e}", exc_info=True)
 
 
 if __name__ == "__main__":

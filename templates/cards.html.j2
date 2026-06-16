@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200">
+  <title>{{ year }}년 {{ month }}월 중국 판호 카드뉴스 — SHANGHAI GIPPIE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {# Web font is progressive enhancement; the offline fallback is the system
+     'Noto Sans CJK KR' (fonts-noto-cjk) + 'Noto Color Emoji' installed in the
+     NAS Docker image, so cards render correctly even if the CDN is blocked. #}
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <style>
+    /* ─── Reset ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:   #0D1520;
+      --navy2:  #101827;
+      --navy3:  #162135;
+      --cyan:   #29ABE2;
+      --cyan2:  #1B7FAB;
+      --beige:  #F2EDE8;
+      --beige2: #EDE7E0;
+      --red:    #CC2222;
+      --white:  #FFFFFF;
+      --g1: #E8E8E8;
+      --g2: #B0B0B0;
+      --g3: #666666;
+      --g4: #333333;
+      --green:  #00B050;
+      --redchg: #D94040;
+    }
+
+    body {
+      background: #181818;
+      font-family: 'Noto Sans KR', 'Noto Sans CJK KR', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Color Emoji', sans-serif;
+      padding: 32px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 52px;
+    }
+
+    /* ─── Page-level label / download button ─── */
+    .card-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-section-label {
+      align-self: flex-start;
+      font-size: 11px;
+      color: #555;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-left: 2px;
+    }
+    .dl-btn {
+      width: 1080px;
+      padding: 11px 0;
+      background: #222;
+      color: #999;
+      border: 1px solid #383838;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'Noto Sans KR', sans-serif;
+      letter-spacing: 1px;
+      transition: background .15s, color .15s;
+    }
+    .dl-btn:hover { background: #2e2e2e; color: #ddd; border-color: #555; }
+
+    /* ═══════════════════════════════════════
+       CARD BASE
+    ═══════════════════════════════════════ */
+    .card {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* shared accent-line + page-num helpers */
+    .cyan-bar  { display: inline-block; width: 28px; height: 3px; background: var(--cyan);  border-radius: 2px; vertical-align: middle; }
+    .white-bar { display: inline-block; width: 28px; height: 3px; background: rgba(255,255,255,.35); border-radius: 2px; vertical-align: middle; }
+    .gray-bar  { display: inline-block; width: 28px; height: 3px; background: #555; border-radius: 2px; vertical-align: middle; }
+
+
+    /* ═══════════════════════════════════════
+       CARD 1 — COVER (dark navy)
+    ═══════════════════════════════════════ */
+    #card1 {
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #card1 .c1-topbar {
+      padding: 44px 56px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #card1 .c1-topbar .tl { font-size: 12px; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; }
+    #card1 .pagenum { position: absolute; top: 44px; right: 56px; font-size: 14px; color: var(--g3); letter-spacing: 1px; }
+
+    #card1 .c1-pills {
+      padding: 22px 56px 0;
+      display: flex; gap: 12px;
+    }
+    .pill {
+      border: 1.5px solid #4a5568;
+      border-radius: 40px;
+      padding: 7px 22px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--g1);
+      white-space: nowrap;
+    }
+
+    #card1 .c1-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 56px 56px;
+      position: relative;
+    }
+
+    #card1 .deco-num {
+      position: absolute;
+      right: 24px;
+      bottom: 120px;
+      font-size: 540px;
+      font-weight: 900;
+      line-height: 1;
+      color: rgba(16,38,60,.75);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    #card1 .report-eyebrow { font-size: 15px; color: var(--g2); letter-spacing: .5px; margin-bottom: 10px; }
+    #card1 .c1-year  { font-size: 96px; font-weight: 900; color: var(--white); line-height: 1; letter-spacing: -2px; }
+    #card1 .c1-month { font-size: 96px; font-weight: 900; color: var(--cyan);  line-height: 1; letter-spacing: -2px; }
+    #card1 .c1-cat   { font-size: 64px; font-weight: 700; color: var(--white); line-height: 1.1; }
+    #card1 .c1-meta  { font-size: 16px; color: var(--g2); margin-top: 18px; letter-spacing: .5px; }
+
+    #card1 .c1-footer {
+      display: flex; align-items: center; gap: 14px;
+      margin-top: 44px;
+    }
+    #card1 .c1-footer .brand { font-size: 13px; color: var(--g3); letter-spacing: 3px; text-transform: uppercase; }
+
+
+    /* ═══════════════════════════════════════
+       CARD 2 — STATS (warm beige)
+    ═══════════════════════════════════════ */
+    #card2 {
+      background: var(--beige);
+      padding: 52px 60px 44px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #card2 .c2-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    #card2 .c2-topbar .tag { border: 1.5px solid #aaa; border-radius: 6px; padding: 4px 14px; font-size: 13px; color: #666; }
+    #card2 .pagenum { position: absolute; top: 52px; right: 60px; font-size: 14px; color: #aaa; letter-spacing: 1px; }
+    #card2 .c2-title { font-size: 58px; font-weight: 900; color: #111; line-height: 1.1; margin-bottom: 4px; }
+    #card2 .c2-sub   { font-size: 16px; color: #888; margin-bottom: 30px; }
+
+    /* Stat boxes */
+    .stat-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .stat-box {
+      background: #111;
+      border-radius: 12px;
+      padding: 26px 26px 22px;
+      position: relative;
+    }
+    .stat-box .sb-type { font-size: 13px; color: #aaa; margin-bottom: 6px; letter-spacing: .3px; }
+    .stat-box .sb-num  { font-size: 80px; font-weight: 900; color: #fff; line-height: 1; }
+    .stat-box .sb-unit { font-size: 17px; color: #aaa; margin-top: 4px; }
+    .stat-box .sb-mom  {
+      position: absolute; bottom: 22px; right: 22px;
+      display: flex; align-items: center; gap: 5px;
+      color: #fff;
+      font-size: 13px; font-weight: 700;
+      border-radius: 20px; padding: 5px 14px;
+    }
+    .sb-mom.up { background: var(--cyan); }
+    .sb-mom.dn { background: var(--redchg); }
+
+    /* YoY */
+    .yoy-block { border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 20px; }
+    .yoy-label { font-size: 13px; color: #888; letter-spacing: .3px; margin-bottom: 12px; }
+    .yoy-row {
+      display: flex; align-items: center; gap: 0;
+      padding: 9px 0; border-bottom: 1px solid #ddd;
+    }
+    .yoy-row:last-child { border-bottom: none; }
+    .yr-icon  { font-size: 15px; margin-right: 10px; }
+    .yr-lbl   { font-size: 14px; font-weight: 500; color: #444; width: 90px; }
+    .yr-from  { font-size: 15px; color: #888; width: 110px; }
+    .yr-arr   { font-size: 16px; color: #bbb; margin: 0 6px; }
+    .yr-to    { font-size: 18px; font-weight: 700; color: #111; flex: 1; }
+    .yr-chg   { font-size: 16px; font-weight: 700; }
+    .up       { color: var(--green); }
+    .dn       { color: var(--redchg); }
+
+    /* YTD */
+    .ytd-label { font-size: 13px; color: #888; letter-spacing: .3px; margin-bottom: 10px; }
+    .ytd-cells { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .ytd-cell {
+      background: #fff; border: 1px solid #e0e0e0; border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .yc-num  { font-size: 40px; font-weight: 900; color: var(--cyan); line-height: 1; }
+    .yc-unit { font-size: 13px; color: #888; }
+    .yc-lbl  { font-size: 13px; font-weight: 500; color: #444; margin-top: 4px; }
+    .yc-yoy  { font-size: 12px; font-weight: 700; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .yc-yoy .yy-base { font-size: 11px; color: #aaa; font-weight: 400; }
+
+    #card2 .footnote {
+      font-size: 12px; color: #bbb; margin-top: 14px; letter-spacing: .3px;
+    }
+
+
+    /* ═══════════════════════════════════════
+       CARD 3 — IMPORT (dark navy + cyan)
+    ═══════════════════════════════════════ */
+    #card3 { background: var(--navy); display: flex; flex-direction: column; }
+
+    #card3 .c3-head { padding: 44px 56px 0; }
+    #card3 .c3-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    #card3 .c3-topbar .tl { font-size: 12px; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; }
+    #card3 .pagenum { position: absolute; top: 44px; right: 56px; font-size: 14px; color: var(--g3); letter-spacing: 1px; }
+    #card3 .c3-title { font-size: 34px; font-weight: 700; color: var(--white); margin-bottom: 22px; }
+
+    /* Spotlight box */
+    .spotlight {
+      margin: 0 56px 20px;
+      background: rgba(41,171,226,.08);
+      border: 1px solid rgba(41,171,226,.3);
+      border-radius: 12px;
+      padding: 18px 26px;
+      position: relative;
+    }
+    .spotlight::before {
+      content: 'SPOTLIGHT';
+      position: absolute; top: -1px; right: 18px;
+      background: var(--cyan); color: #fff;
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      padding: 3px 12px; border-radius: 0 0 6px 6px;
+    }
+    .sp-cn   { font-size: 13px; color: var(--cyan); margin-bottom: 3px; }
+    .sp-en   { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .sp-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sp-tag  {
+      font-size: 12px; color: #aaa;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 4px; padding: 3px 10px;
+    }
+
+    /* Import-games analysis box */
+    .c3-analysis {
+      margin: 18px 56px 0;
+      background: rgba(41,171,226,.07);
+      border: 1px solid rgba(41,171,226,.18);
+      border-left: 3px solid var(--cyan);
+      border-radius: 8px;
+      padding: 16px 22px;
+    }
+    .c3-analysis-label { font-size: 13px; font-weight: 700; color: var(--cyan); margin-bottom: 8px; letter-spacing: .5px; }
+    .c3-analysis-text  { font-size: 14px; color: #b8bcc8; line-height: 1.6; }
+
+    /* Game table */
+    .game-tbl        { padding: 0 56px; }
+    .game-tbl-hdr    {
+      display: grid; grid-template-columns: 26px 1fr 220px 130px;
+      gap: 14px; padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: 2px;
+    }
+    .game-tbl-hdr span { font-size: 11px; color: var(--g3); letter-spacing: 1px; text-transform: uppercase; }
+
+    .gr {
+      display: grid; grid-template-columns: 26px 1fr 220px 130px;
+      gap: 14px; align-items: center;
+      padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .gr:last-child { border-bottom: none; }
+    .gr.hl { background: rgba(41,171,226,.05); border-radius: 6px; margin: 0 -6px; padding: 13px 6px; border-bottom: none; }
+
+    .gr .gn { font-size: 12px; color: var(--g3); text-align: center; }
+    .gr .gc  .gcn { font-size: 16px; color: #ddd; font-weight: 500; }
+    .gr .gc  .gen { font-size: 12px; color: var(--g3); margin-top: 2px; }
+    .gr .gd  { font-size: 13px; color: #aaa; line-height: 1.45; }
+    .gr .go  { font-size: 13px; color: #888; }
+
+    #card3 .c3-footer {
+      position: absolute; bottom: 32px; left: 56px; right: 56px;
+      font-size: 12px; color: var(--g3);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+
+    /* ═══════════════════════════════════════
+       CARD 4 — DOMESTIC SPOTLIGHT (warm beige)
+    ═══════════════════════════════════════ */
+    #card4 {
+      background: var(--beige);
+      padding: 44px 56px 44px;
+      display: flex; flex-direction: column;
+    }
+
+    #card4 .c4-topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    #card4 .c4-topbar .tag { border: 1.5px solid #aaa; border-radius: 6px; padding: 4px 14px; font-size: 13px; color: #666; }
+    #card4 .pagenum { position: absolute; top: 44px; right: 56px; font-size: 14px; color: #aaa; letter-spacing: 1px; }
+    #card4 .c4-eyebrow { font-size: 13px; color: #888; letter-spacing: .5px; margin-bottom: 4px; }
+    #card4 .c4-title   { font-size: 38px; font-weight: 900; color: #111; line-height: 1.2; margin-bottom: 24px; }
+
+    /* Count box */
+    .dom-count-box {
+      background: #111; border-radius: 12px;
+      padding: 22px 26px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .dcb-lbl { font-size: 13px; color: #aaa; margin-bottom: 4px; }
+    .dcb-num { font-size: 64px; font-weight: 900; color: #fff; line-height: 1; }
+    .dcb-unit { font-size: 17px; color: #aaa; }
+    .dcb-mom {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--cyan); color: #fff;
+      font-size: 13px; font-weight: 700;
+      border-radius: 20px; padding: 6px 16px; margin-bottom: 5px;
+    }
+    .dcb-base { font-size: 12px; color: #555; display: block; text-align: right; }
+
+    /* Big spotlight */
+    .big-spotlight {
+      background: #fff; border: 1px solid #e0e0e0; border-radius: 12px;
+      padding: 30px 32px; display: flex; flex-direction: column;
+      position: relative;
+    }
+
+    /* Domestic-games analysis box */
+    .c4-analysis {
+      margin-top: 18px;
+      background: #f9f6f2;
+      border: 1px solid #e8e2d8;
+      border-left: 3px solid var(--cyan);
+      border-radius: 8px;
+      padding: 16px 22px;
+    }
+    .c4-analysis-label { font-size: 13px; font-weight: 700; color: var(--cyan2); margin-bottom: 8px; letter-spacing: .5px; }
+    .c4-analysis-text  { font-size: 14px; color: #777; line-height: 1.6; }
+
+    /* Multi-game list (card 4 variant) */
+    #card4 .c4-title.tight { margin-bottom: 6px; }
+    #card4 .c4-subtitle { font-size: 17px; color: #777; margin-bottom: 22px; }
+    .dom-games { margin-top: 4px; }
+    .dom-game {
+      display: grid; grid-template-columns: 132px 1fr auto; gap: 18px; align-items: center;
+      padding: 19px 0; border-bottom: 1px solid #e2ded4;
+    }
+    .dom-game:first-child { border-top: 1px solid #e2ded4; }
+    .dg-pub  { font-size: 15px; font-weight: 700; color: var(--cyan2); line-height: 1.35; }
+    .dg-name { font-size: 23px; font-weight: 900; color: #111; line-height: 1.25; }
+    .dg-name .dg-sub { font-size: 15px; font-weight: 500; color: #9a9a9a; }
+    .dg-desc { font-size: 14px; color: #8a8a8a; margin-top: 5px; line-height: 1.4; }
+    .dg-genre {
+      font-size: 13px; color: #666; background: #eceae3; border: 1px solid #d8d4ca;
+      border-radius: 6px; padding: 6px 14px; white-space: nowrap; font-weight: 500;
+    }
+    .big-spotlight::before {
+      content: '이달의 주목작';
+      position: absolute; top: -1px; right: 22px;
+      background: var(--cyan); color: #fff;
+      font-size: 11px; font-weight: 700; letter-spacing: .5px;
+      padding: 5px 16px; border-radius: 0 0 8px 8px;
+    }
+    .bsp-cn     { font-size: 20px; color: var(--cyan2); margin-bottom: 4px; letter-spacing: 1px; }
+    .bsp-kr     { font-size: 44px; font-weight: 900; color: #111; line-height: 1.1; margin-bottom: 3px; }
+    .bsp-studio { font-size: 15px; color: #888; margin-bottom: 24px; }
+
+    .bsp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .bsp-item {
+      background: #f5f5f5; border-radius: 8px; padding: 13px 16px;
+    }
+    .bsp-key { font-size: 10px; color: #999; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .bsp-val { font-size: 16px; font-weight: 700; color: #111; line-height: 1.3; }
+    .bsp-val-sm { font-size: 13px; }
+
+    .bsp-note {
+      margin-top: 18px;
+      font-size: 13px; color: #888; line-height: 1.6;
+      padding: 12px 16px; background: #f9f6f2; border-radius: 8px;
+      border-left: 3px solid var(--cyan);
+    }
+
+    #card4 .footnote { font-size: 12px; color: #bbb; margin-top: 18px; }
+
+
+    /* ═══════════════════════════════════════
+       CARD 5 — CTA (red)
+    ═══════════════════════════════════════ */
+    #card5 { background: var(--red); display: flex; flex-direction: column; }
+
+    #card5 .c5-topbar { padding: 44px 56px 0; display: flex; align-items: center; gap: 10px; }
+    #card5 .c5-topbar .tl { font-size: 12px; color: rgba(255,255,255,.45); letter-spacing: 3px; text-transform: uppercase; }
+    #card5 .pagenum { position: absolute; top: 44px; right: 56px; font-size: 14px; color: rgba(255,255,255,.25); letter-spacing: 1px; }
+
+    #card5 .c5-body { flex: 1; padding: 0 56px; display: flex; flex-direction: column; justify-content: center; }
+
+    .ytd-highlight {
+      background: rgba(0,0,0,.2); border-radius: 10px;
+      padding: 16px 22px; margin-bottom: 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .yh-num   { font-size: 52px; font-weight: 900; color: #fff; line-height: 1; }
+    .yh-lbl   { font-size: 14px; color: rgba(255,255,255,.55); }
+    .yh-right { font-size: 13px; color: rgba(255,255,255,.45); text-align: right; line-height: 1.6; }
+
+    #card5 .c5-headline { font-size: 68px; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 26px; }
+
+    .c5-body-block { border-left: 3px solid rgba(255,255,255,.3); padding-left: 20px; }
+    .c5-body-block p { font-size: 17px; color: rgba(255,255,255,.75); line-height: 1.75; margin-bottom: 2px; }
+    .c5-body-block p strong { color: #fff; font-weight: 700; }
+
+    /* Footer contact */
+    .c5-footer { padding: 0 56px 40px; }
+    .c5-divider { border: none; border-top: 1px solid rgba(255,255,255,.2); margin-bottom: 18px; }
+    .c5-inquiry { font-size: 13px; color: rgba(255,255,255,.35); letter-spacing: 1px; margin-bottom: 10px; }
+
+    .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .si {
+      background: rgba(0,0,0,.2); border-radius: 6px;
+      padding: 10px 16px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .si-platform { font-size: 11px; color: rgba(255,255,255,.35); letter-spacing: 2px; text-transform: uppercase; }
+    .si-handle   { font-size: 15px; font-weight: 700; color: #fff; }
+  </style>
+</head>
+<body>
+
+{# ═══════════════ CARD 1 — COVER ═══════════════ #}
+<div class="card-section">
+  <span class="card-section-label">Card 01 — Cover</span>
+  <div id="card1" class="card">
+    <div class="c1-topbar">
+      <span class="cyan-bar"></span>
+      <span class="tl">China Game Market</span>
+    </div>
+    <span class="pagenum">01 / 05</span>
+
+    <div class="c1-pills">
+      <div class="pill">수입 {{ counts.import }}종</div>
+      <div class="pill">국산 {{ counts.domestic }}종</div>
+      <div class="pill">자격변경 {{ counts.change }}건</div>
+    </div>
+
+    <div class="c1-body">
+      <div class="deco-num">{{ month }}</div>
+
+      <div class="report-eyebrow">NPPA &nbsp; 판호 승인 현황</div>
+      <div class="c1-year">{{ year }}년</div>
+      <div class="c1-month">{{ month }}월</div>
+      <div class="c1-cat">판호 리포트</div>
+      <div class="c1-meta">발표일 {{ year }}년 {{ month }}월 &nbsp;·&nbsp; 총 {{ counts.total }}종 승인</div>
+
+      <div class="c1-footer">
+        <span class="gray-bar"></span>
+        <span class="brand">Shanghai Gippie &nbsp;·&nbsp; {{ month_en }} {{ year }}</span>
+      </div>
+    </div>
+  </div>
+  <button class="dl-btn" onclick="dlCard('card1','01_cover')">⬇ PNG 저장 — 01 표지</button>
+</div>
+
+
+{# ═══════════════ CARD 2 — STATS ═══════════════ #}
+<div class="card-section">
+  <span class="card-section-label">Card 02 — Stats</span>
+  <div id="card2" class="card">
+    <div class="c2-topbar">
+      <div class="tag">승인 현황</div>
+    </div>
+    <span class="pagenum">02 / 05</span>
+
+    <div class="c2-title">{{ month }}월 판호 총 {{ counts.total }}종</div>
+    <div class="c2-sub">자격변경 {{ counts.change }}건 포함</div>
+
+    {# Big stat boxes #}
+    <div class="stat-boxes">
+      <div class="stat-box">
+        <div class="sb-type">수입 게임</div>
+        <div class="sb-num">{{ counts.import }}</div>
+        <div class="sb-unit">종 승인</div>
+        {% set m = stats.mom_import %}
+        <div class="sb-mom {{ 'up' if m >= 0 else 'dn' }}">전월比 {{ '▲+' ~ m if m >= 0 else '▼' ~ m }}종</div>
+      </div>
+      <div class="stat-box">
+        <div class="sb-type">국산 게임</div>
+        <div class="sb-num">{{ counts.domestic }}</div>
+        <div class="sb-unit">종 승인</div>
+        {% set m = stats.mom_domestic %}
+        <div class="sb-mom {{ 'up' if m >= 0 else 'dn' }}">전월比 {{ '▲+' ~ m if m >= 0 else '▼' ~ m }}종</div>
+      </div>
+    </div>
+
+    {# YoY comparison #}
+    <div class="yoy-block">
+      <div class="yoy-label">전년동월 비교 &nbsp;·&nbsp; {{ stats.yoy.import.prev_year }}년 {{ month }}월</div>
+      {% for cat, label, icon in [('import','수입 게임','🌐'), ('domestic','국산 게임','🇨🇳')] %}
+      {% set y = stats.yoy[cat] %}
+      <div class="yoy-row">
+        <span class="yr-icon">{{ icon }}</span>
+        <span class="yr-lbl">{{ label }}</span>
+        <span class="yr-from">{{ y.prev_year }}년 {{ y.prev }}종</span>
+        <span class="yr-arr">→</span>
+        <span class="yr-to">{{ year }}년 {{ counts[cat] }}종</span>
+        <span class="yr-chg {{ y.dir }}">{{ '▲' if y.pct >= 0 else '▼' }}{{ y.pct | abs }}%</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    {# YTD #}
+    <div class="ytd-label">{{ year }}년 1-{{ month }}월 누적 발급수량</div>
+    <div class="ytd-cells">
+      {% for key, lbl in [('import','수입게임'), ('domestic','국산게임'), ('total','합계')] %}
+      {% set c = stats.ytd[key] %}
+      <div class="ytd-cell">
+        <div class="yc-num">{{ c.cnt }}</div><span class="yc-unit">종</span>
+        <div class="yc-lbl">{{ lbl }}</div>
+        {% if c.pct is not none %}
+        <div class="yc-yoy {{ c.dir }}"><span class="yy-base">{{ stats.yoy.import.prev_year }}년 {{ c.prev }}종 →</span> {{ '▲' if c.pct >= 0 else '▼' }}{{ c.pct | abs }}%</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if stats.ytd_prev_note %}
+    <div class="footnote">— {{ stats.yoy.import.prev_year }}년 Jan-{{ month_en }} 누적 기준: {{ stats.ytd_prev_note }} (NPPA 공식 발표)</div>
+    {% endif %}
+  </div>
+  <button class="dl-btn" onclick="dlCard('card2','02_stats')">⬇ PNG 저장 — 02 통계</button>
+</div>
+
+
+{# ═══════════════ CARD 3 — IMPORT GAMES ═══════════════ #}
+<div class="card-section">
+  <span class="card-section-label">Card 03 — Import Games</span>
+  <div id="card3" class="card">
+    <div class="c3-head">
+      <div class="c3-topbar">
+        <span class="cyan-bar"></span>
+        <span class="tl">수입게임 판호 현황</span>
+      </div>
+      <div class="c3-title">{{ year }}년 {{ month }}월 &nbsp; 수입 승인 게임 {{ counts.import }}종</div>
+    </div>
+    <span class="pagenum">03 / 05</span>
+
+    {% set sp = import_card.spotlight %}
+    {% if sp %}
+    <div class="spotlight">
+      <div class="sp-cn">{{ sp.cn }}</div>
+      <div class="sp-en">{{ sp.en }}</div>
+      <div class="sp-tags">
+        {% for tag in sp.tags %}<span class="sp-tag">{{ tag }}</span>{% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="game-tbl">
+      <div class="game-tbl-hdr">
+        <span>#</span>
+        <span>게임명 (중문 / 영문)</span>
+        <span>개발사 · 원작사</span>
+        <span>국가</span>
+      </div>
+      {% for g in import_card.games %}
+      <div class="gr{{ ' hl' if g.hl else '' }}">
+        <span class="gn">{{ loop.index }}</span>
+        <div class="gc">
+          <div class="gcn">{{ g.cn }}</div>
+          <div class="gen">{{ g.en }}</div>
+        </div>
+        <div class="gd">{{ g.dev | safe }}</div>
+        <div class="go">{{ g.country }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if import_card.analysis %}
+    <div class="c3-analysis">
+      <div class="c3-analysis-label">📊 수입게임 분석</div>
+      <div class="c3-analysis-text">{{ import_card.analysis | safe }}</div>
+    </div>
+    {% endif %}
+
+    <div class="c3-footer">
+      <span>{{ import_card.footer_note }}</span>
+      <span>SHANGHAI GIPPIE · {{ month_en }} {{ year }}</span>
+    </div>
+  </div>
+  <button class="dl-btn" onclick="dlCard('card3','03_import')">⬇ PNG 저장 — 03 수입게임</button>
+</div>
+
+
+{# ═══════════════ CARD 4 — DOMESTIC SPOTLIGHT ═══════════════ #}
+<div class="card-section">
+  <span class="card-section-label">Card 04 — Domestic Spotlight</span>
+  <div id="card4" class="card">
+    <div class="c4-topbar">
+      <div class="tag">국산 게임 주목작</div>
+    </div>
+    <span class="pagenum">04 / 05</span>
+
+    {% if domestic_card.games %}
+    {# ── Multi-game list layout ── #}
+    <div class="c4-title tight">{{ year }}년 {{ month }}월 &nbsp; 국산 게임 {{ counts.domestic }}종 승인</div>
+    {% if domestic_card.subtitle %}<div class="c4-subtitle">{{ domestic_card.subtitle }}</div>{% endif %}
+
+    <div class="dom-games">
+      {% for g in domestic_card.games %}
+      <div class="dom-game">
+        <div class="dg-pub">{{ g.publisher }}</div>
+        <div class="dg-main">
+          <div class="dg-name">{{ g.name }}{% if g.name_sub %} <span class="dg-sub">{{ g.name_sub }}</span>{% endif %}</div>
+          {% if g.desc %}<div class="dg-desc">{{ g.desc }}</div>{% endif %}
+        </div>
+        {% if g.genre %}<div class="dg-genre">{{ g.genre }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    {# ── Single deep-spotlight layout ── #}
+    {% set bsp = domestic_card.spotlight %}
+    <div class="c4-eyebrow">이달의 주목작 : {{ bsp.cn }}</div>
+    <div class="c4-title">{{ year }}년 {{ month }}월 &nbsp; 국산 게임 {{ counts.domestic }}종 승인</div>
+
+    <div class="dom-count-box">
+      <div>
+        <div class="dcb-lbl">국산 게임</div>
+        <span class="dcb-num">{{ counts.domestic }}</span><span class="dcb-unit"> 종 승인</span>
+      </div>
+      <div style="text-align:right">
+        {% set m = stats.mom_domestic %}
+        <div class="dcb-mom">전월比 {{ '▲+' ~ m if m >= 0 else '▼' ~ m }}종</div>
+        <span class="dcb-base">{{ domestic_card.mom_base }}</span>
+      </div>
+    </div>
+
+    <div class="big-spotlight">
+      <div class="bsp-cn">{{ bsp.cn }}</div>
+      <div class="bsp-kr">{{ bsp.kr }}</div>
+      <div class="bsp-studio">{{ bsp.studio }}</div>
+
+      <div class="bsp-grid">
+        {% for item in bsp.grid %}
+        <div class="bsp-item">
+          <div class="bsp-key">{{ item.key }}</div>
+          <div class="bsp-val">{{ item.val | safe }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="bsp-note">{{ bsp.note }}</div>
+    </div>
+    {% endif %}
+
+    {% if domestic_card.analysis %}
+    <div class="c4-analysis">
+      <div class="c4-analysis-label">📊 국산게임 분석</div>
+      <div class="c4-analysis-text">{{ domestic_card.analysis | safe }}</div>
+    </div>
+    {% endif %}
+
+    <div class="footnote">{{ domestic_card.footnote }}</div>
+  </div>
+  <button class="dl-btn" onclick="dlCard('card4','04_domestic')">⬇ PNG 저장 — 04 국산 주목작</button>
+</div>
+
+
+{# ═══════════════ CARD 5 — CTA ═══════════════ #}
+<div class="card-section">
+  <span class="card-section-label">Card 05 — CTA</span>
+  <div id="card5" class="card">
+    <div class="c5-topbar">
+      <span class="white-bar"></span>
+      <span class="tl">For Global Studios</span>
+    </div>
+    <span class="pagenum">05 / 05</span>
+
+    <div class="c5-body">
+      <div class="ytd-highlight">
+        <div>
+          <div class="yh-num">{{ stats.ytd.import.cnt }}종</div>
+          <div class="yh-lbl">{{ year }}년 1-{{ month }}월 수입 판호 소진</div>
+        </div>
+        <div class="yh-right">{{ cta.ytd_highlight_right | safe }}</div>
+      </div>
+
+      <div class="c5-headline">{{ cta.headline | safe }}</div>
+
+      <div class="c5-body-block">
+        {% for line in cta.body_lines %}
+        <p>{{ line | safe }}</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="c5-footer">
+      <hr class="c5-divider">
+      <div class="c5-inquiry">문의 &nbsp;·&nbsp; SHANGHAI GIPPIE</div>
+      <div class="social-grid">
+        {% for s in social %}
+        <div class="si">
+          <span class="si-platform">{{ s.platform }}</span>
+          <span class="si-handle">{{ s.handle }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <button class="dl-btn" onclick="dlCard('card5','05_cta')">⬇ PNG 저장 — 05 CTA</button>
+</div>
+
+{# ═══════════════ SOCIAL POSTS (optional, not rendered to PNG) ═══════════════ #}
+{% if posts %}
+<div style="width:1080px; margin-top:20px;">
+  <div style="color:#555; font-size:11px; letter-spacing:3px; text-transform:uppercase; margin-bottom:24px;">소셜 미디어 포스트 초안</div>
+  {% for p in posts %}
+  <div style="background:#1e1e1e; border:1px solid #333; border-radius:12px; padding:32px 36px; margin-bottom:20px;">
+    <div style="color:#888; font-size:12px; letter-spacing:2px; font-weight:700; text-transform:uppercase; margin-bottom:16px;">{{ p.platform }}</div>
+    <pre id="post-{{ loop.index }}" style="white-space:pre-wrap; font-family:'Noto Sans KR',sans-serif; font-size:15px; color:#ddd; line-height:1.8;">{{ p.text }}</pre>
+    <button onclick="copyPost('post-{{ loop.index }}')" style="margin-top:12px; padding:8px 20px; background:#333; color:#aaa; border:1px solid #444; border-radius:6px; cursor:pointer; font-size:12px; font-family:'Noto Sans KR',sans-serif;">복사</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+
+<script>
+  async function dlCard(cardId, filename) {
+    const btn = event.target;
+    btn.textContent = '생성 중...';
+    btn.disabled = true;
+    try {
+      await document.fonts.ready;
+      const card = document.getElementById(cardId);
+      const canvas = await html2canvas(card, {
+        width: 1080, height: 1080, scale: 1,
+        useCORS: true, allowTaint: false, backgroundColor: null, logging: false,
+      });
+      const link = document.createElement('a');
+      link.download = `gippie_pangho_{{ year }}_{{ '%02d' | format(month) }}_${filename}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      btn.textContent = `✓ 저장됨 — ${filename}`;
+      btn.style.color = '#6ee7b7';
+    } catch(e) {
+      btn.textContent = '⚠ 오류 발생';
+      console.error(e);
+    } finally {
+      setTimeout(() => {
+        btn.textContent = `⬇ PNG 저장 — ${filename.replace(/_/g,' ')}`;
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 3000);
+    }
+  }
+  function copyPost(id) {
+    const el = document.getElementById(id);
+    const text = el.textContent || el.innerText;
+    navigator.clipboard.writeText(text.trim()).then(() => {
+      const btn = event.target;
+      const orig = btn.textContent;
+      btn.textContent = '✓ 복사됨';
+      btn.style.color = '#6ee7b7';
+      setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
