@@ -162,6 +162,13 @@ def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[st
     else:
         channels = ["msedge", "chrome", ""]
 
+    # A system Chromium binary (e.g. Debian's /usr/bin/chromium on the NAS) used
+    # for the bundled ("") launch, avoiding Playwright's blocked browser download.
+    exec_path = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE", "").strip()
+    # --no-sandbox is required to run Chromium as root inside the container.
+    launch_args = ["--force-color-profile=srgb", "--no-sandbox",
+                   "--disable-dev-shm-usage"]
+
     paths: list[str] = []
     with sync_playwright() as p:
         browser = None
@@ -169,11 +176,12 @@ def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[st
         for ch in channels:
             try:
                 if ch:
+                    browser = p.chromium.launch(channel=ch, args=launch_args)
+                elif exec_path:
                     browser = p.chromium.launch(
-                        channel=ch, args=["--force-color-profile=srgb"])
+                        executable_path=exec_path, args=launch_args)
                 else:
-                    browser = p.chromium.launch(
-                        args=["--force-color-profile=srgb"])
+                    browser = p.chromium.launch(args=launch_args)
                 break
             except Exception as e:  # channel not installed → try next
                 last_err = e

@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  cn-isbn:
+    build: .
+    image: cn-isbn:latest
+    container_name: cn-isbn
+    restart: "no"   # Triggered by Synology Task Scheduler, not auto-started
+
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_CHANNEL=${SLACK_CHANNEL:-#match_cn_isbn}
+      - APP_BASE_DIR=/app
+      - TZ=Asia/Seoul
+      - FONTS_DIR=/app/fonts
+      # git-less GitHub handoff (NAS has no git)
+      - GITHUB_REPO=${GITHUB_REPO:-Sh-InSoo/cn-isbn-cards}
+      - GITHUB_BRANCH=${GITHUB_BRANCH:-main}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}          # contents:write PAT — set in .env
+      - RENDER_BROWSER_CHANNEL=chromium       # use the image's bundled Chromium
+
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      # NAS-local code (not in GitHub)
+      - ./scraper.py:/app/scraper.py
+      - ./state_manager.py:/app/state_manager.py
+      # repo code (mounted so updates don't always need an image rebuild)
+      - ./main.py:/app/main.py
+      - ./config.py:/app/config.py
+      - ./slack_client.py:/app/slack_client.py
+      - ./comparison.py:/app/comparison.py
+      - ./image_gen.py:/app/image_gen.py
+      - ./data_export.py:/app/data_export.py
+      - ./card_publisher.py:/app/card_publisher.py
+      - ./render_cards.py:/app/render_cards.py
+      - ./templates:/app/templates
+      # offline fonts for PIL fallback (image_gen.py)
+      - /volume1/docker/fonts:/app/fonts:ro
