@@ -6,7 +6,6 @@ WORKDIR /app
 RUN sed -i 's|deb.debian.org|mirrors.tuna.tsinghua.edu.cn|g; s|security.debian.org|mirrors.tuna.tsinghua.edu.cn|g' /etc/apt/sources.list.d/debian.sources \
     && apt-get update && apt-get install -y --no-install-recommends \
         curl \
-        git \
         fonts-noto-cjk \
         fonts-noto-color-emoji \
     && rm -rf /var/lib/apt/lists/*

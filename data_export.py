@@ -1,49 +1,49 @@
 """
-data_export.py — NAS-side handoff to the cloud routine.
+data_export.py — NAS-side handoff to the cloud routine (git-less).
 
-The existing NAS pipeline (main.py) already computes `results`, `ytd`, and
-`comparison` for a fully-published month. This module serializes that exact data
-to a JSON file inside a cloned GitHub repo and pushes it, so the cloud routine
-can read it and produce the Slack Canvas summary.
+The NAS has no git, so instead of `git push` this writes the computed scrape
+numbers two ways:
+  1. a LOCAL copy at  {DATA_DIR}/cn-isbn-YYYYMM.json  (so card_publisher can read
+     the scrape side without any network), and
+  2. a push to GitHub via the Contents REST API (so the cloud routine, whose
+     source is the repo, can read it and produce the analysis Canvas + the
+     editorial JSON).
 
-Wiring (in main.py, right before `state.mark_sent(year_month)`):
-
+Wiring (in main.py Phase 1):
     from data_export import export_and_push
     export_and_push(year, month, results, ytd, comparison)
 
-Env vars (set on the NAS):
-    DATA_REPO_DIR   absolute path to the cloned cn-isbn-cards repo on the NAS
-                    (default: /app/data-repo). The container must have this repo
-                    cloned with push credentials (HTTPS token or SSH key).
-    GIT_AUTHOR_NAME / GIT_AUTHOR_EMAIL  optional commit identity.
+Env vars:
+    GITHUB_TOKEN   fine-grained PAT with `contents: read & write` on the repo.
+                   If unset, the local copy is still written and the GitHub push
+                   is skipped (logged) — the run does not fail.
+    GITHUB_REPO    default "Sh-InSoo/cn-isbn-cards"
+    GITHUB_BRANCH  default "main"
 
-The cloud routine only ever reads these files; it never writes back. Dedup on the
-cloud side is done by checking Slack for an existing post for the same month, so a
-re-push (idempotent overwrite) is harmless.
+The cloud routine only reads these files; a re-push (idempotent overwrite using
+the current file SHA) is harmless.
 """
 
 from __future__ import annotations
 
+import base64
 import json
 import logging
-import os
-import subprocess
 from datetime import datetime
 from pathlib import Path
 
+import requests
+
+from config import Config
+
 logger = logging.getLogger(__name__)
 
-# Schema version — bump if the JSON shape changes so the routine can guard on it.
 SCHEMA_VERSION = 1
+_API = "https://api.github.com"
 
 
-def build_payload(
-    year: int,
-    month: int,
-    results: dict,
-    ytd: dict,
-    comparison: dict,
-) -> dict:
+def build_payload(year: int, month: int, results: dict, ytd: dict,
+                  comparison: dict) -> dict:
     """Assemble the handoff JSON. Numbers only — no fabricated fields."""
     return {
         "schema_version": SCHEMA_VERSION,
@@ -64,72 +64,72 @@ def build_payload(
             "domestic": ytd.get("domestic", 0),
             "change": ytd.get("change", 0),
         },
-        # comparison keys are optional (absent when upstream fetch failed).
         "comparison": comparison or {},
     }
 
 
-def export_and_push(
-    year: int,
-    month: int,
-    results: dict,
-    ytd: dict,
-    comparison: dict,
-    repo_dir: str | None = None,
-) -> Path:
-    """Write data/cn-isbn-YYYYMM.json into the repo and git-push it.
+def _github_put_file(rel_path: str, content: str, message: str) -> None:
+    """Create/update a file on GitHub via the Contents API."""
+    repo = Config.GITHUB_REPO
+    branch = Config.GITHUB_BRANCH
+    token = Config.GITHUB_TOKEN
+    url = f"{_API}/repos/{repo}/contents/{rel_path}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
 
-    Returns the path written. Raises on git failure so the NAS log surfaces it;
-    callers may wrap in try/except if a push failure should not abort the run.
+    # Need the current blob SHA to update an existing file.
+    sha = None
+    r = requests.get(url, params={"ref": branch}, headers=headers, timeout=30)
+    if r.status_code == 200:
+        sha = r.json().get("sha")
+    elif r.status_code != 404:
+        r.raise_for_status()
+
+    body = {
+        "message": message,
+        "content": base64.b64encode(content.encode("utf-8")).decode("ascii"),
+        "branch": branch,
+    }
+    if sha:
+        body["sha"] = sha
+
+    r = requests.put(url, json=body, headers=headers, timeout=30)
+    r.raise_for_status()
+
+
+def export_and_push(year: int, month: int, results: dict, ytd: dict,
+                    comparison: dict, repo_dir=None) -> Path:
+    """Write the scrape JSON locally and push it to GitHub via the API.
+
+    `repo_dir` is accepted for backward compatibility but ignored (git-less).
+    Returns the local path written. GitHub push failures raise (caller wraps in
+    try/except); a missing GITHUB_TOKEN is a warning, not an error.
     """
-    repo_dir = Path(repo_dir or os.environ.get("DATA_REPO_DIR", "/app/data-repo"))
-    if not (repo_dir / ".git").exists():
-        raise FileNotFoundError(
-            f"DATA_REPO_DIR is not a git checkout: {repo_dir}. "
-            "Clone the cn-isbn-cards repo there (with push credentials) first."
-        )
-
     payload = build_payload(year, month, results, ytd, comparison)
-    rel_path = Path("data") / f"cn-isbn-{payload['year_month']}.json"
-    out_path = repo_dir / rel_path
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    logger.info(f"[data_export] wrote {out_path} ({out_path.stat().st_size} bytes)")
+    ym = payload["year_month"]
+    rel_path = f"data/cn-isbn-{ym}.json"
+    content = json.dumps(payload, ensure_ascii=False, indent=2)
 
-    env = os.environ.copy()
-    if os.environ.get("GIT_AUTHOR_NAME"):
-        env["GIT_COMMITTER_NAME"] = os.environ["GIT_AUTHOR_NAME"]
-    if os.environ.get("GIT_AUTHOR_EMAIL"):
-        env["GIT_COMMITTER_EMAIL"] = os.environ["GIT_AUTHOR_EMAIL"]
+    # 1. Local copy (card_publisher reads the scrape side from here).
+    local = Config.DATA_DIR / f"cn-isbn-{ym}.json"
+    local.parent.mkdir(parents=True, exist_ok=True)
+    local.write_text(content, encoding="utf-8")
+    logger.info(f"[data_export] wrote local {local} ({local.stat().st_size} bytes)")
 
-    def git(*args: str) -> None:
-        subprocess.run(
-            ["git", "-C", str(repo_dir), *args],
-            check=True,
-            env=env,
-            capture_output=True,
-            text=True,
+    # 2. Push to GitHub for the cloud routine.
+    if not Config.GITHUB_TOKEN:
+        logger.warning(
+            "[data_export] GITHUB_TOKEN not set — wrote local copy only, "
+            "skipped GitHub push (routine won't see this month)."
         )
+        return local
 
-    try:
-        git("pull", "--rebase", "--autostash")  # avoid non-fast-forward rejects
-        git("add", str(rel_path))
-        git(
-            "commit",
-            "-m",
-            f"data: {payload['year_month']} 판호 리포트 (import={payload['results']['import']['count']}, "
-            f"domestic={payload['results']['domestic']['count']}, change={payload['results']['change']['count']})",
-        )
-        git("push")
-        logger.info(f"[data_export] pushed {rel_path} to remote")
-    except subprocess.CalledProcessError as e:
-        # "nothing to commit" is fine (idempotent re-run); re-raise anything else.
-        if "nothing to commit" in (e.stdout or "") + (e.stderr or ""):
-            logger.info("[data_export] no changes to push (already up to date)")
-        else:
-            logger.error(f"[data_export] git failed: {e.stderr or e.stdout}")
-            raise
-
-    return out_path
+    c = payload["results"]
+    msg = (f"data: {ym} 판호 리포트 (import={c['import']['count']}, "
+           f"domestic={c['domestic']['count']}, change={c['change']['count']})")
+    _github_put_file(rel_path, content, msg)
+    logger.info(f"[data_export] pushed {rel_path} to GitHub via Contents API")
+    return local

@@ -10,7 +10,15 @@ class Config:
 
     STATE_FILE = BASE_DIR / "data" / "state.json"
     LOG_FILE   = BASE_DIR / "logs" / "cn-isbn.log"
+    DATA_DIR   = BASE_DIR / "data"
     CARDS_DIR  = BASE_DIR / "data" / "cards"
+
+    # GitHub handoff via HTTPS (the NAS has no git):
+    #   push  scrape JSON     → GitHub Contents API (needs GITHUB_TOKEN, contents:write)
+    #   pull  editorial JSON  → public raw read (no auth needed)
+    GITHUB_REPO   = os.environ.get("GITHUB_REPO", "Sh-InSoo/cn-isbn-cards")
+    GITHUB_BRANCH = os.environ.get("GITHUB_BRANCH", "main")
+    GITHUB_TOKEN  = os.environ.get("GITHUB_TOKEN", "")
 
     NPPA_BASE = "https://www.nppa.gov.cn"
     NPPA_URLS = {
