@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "month": 6,
+  "year_month": "202606",
+  "import_card": {
+    "spotlight": {
+      "cn": "异克斯小队",
+      "en": "Squad X (가칭)",
+      "tags": [
+        "텐센트 계열 유일 수입작",
+        "대리: 海南腾讯互动娱乐",
+        "6월 진구 8종 중 유일 대형 퍼블리셔",
+        "세부 공개 전 · 출시일 미정"
+      ]
+    },
+    "games": [
+      { "cn": "异克斯小队",       "en": "Squad X (가칭)",         "dev": "대리: 海南腾讯互动娱乐<br>출판: 海南省电子音像出版社", "country": "🌐 해외 · 텐센트 대리", "hl": true },
+      { "cn": "夜鸦",             "en": "Night Raven (가칭)",      "dev": "대리: 北京创梦网科技<br>출판: 北京中电电子出版社",     "country": "🌐 해외" },
+      { "cn": "孤岛猎神",         "en": "Lone Island Hunter (가칭)","dev": "대리: 重庆破晓之时网络科技<br>출판: 重庆华龙网集团",   "country": "🌐 해외" },
+      { "cn": "海岛之魂",         "en": "Soul of the Island (가칭)","dev": "대리: 上海果趣信息技术<br>출판: 江苏凤凰数字传媒",     "country": "🌐 해외" },
+      { "cn": "对峙：交锋时刻",   "en": "Standoff: Clash (가칭)",  "dev": "대리: 北京梧桐宇舟科技<br>출판: 上海科学技术文献出版社", "country": "🌐 해외" },
+      { "cn": "北境之地",         "en": "Land of the North (가칭)","dev": "대리: 西安西品网络科技<br>출판: 江苏凤凰电子音像出版社", "country": "🌐 해외" },
+      { "cn": "动物排球社",       "en": "Animal Volleyball (가칭)","dev": "대리: 重庆烽行网络科技<br>출판: 江苏凤凰数字传媒",     "country": "🌐 해외" },
+      { "cn": "桥梁工程师：传送门","en": "Bridge Engineer: Portal (가칭)", "dev": "대리: 上海逸派玩科技<br>출판: 江苏凤凰电子音像出版社", "country": "🌐 해외" }
+    ],
+    "footer_note": "8종 전체 게임명 · 대리사 — NPPA 공식 발표 기준(国新出审〔2026〕1498~1505호). 영문명은 미공식 가칭",
+    "analysis": "6월 수입은 8종으로 전월(4종) 대비 <strong style=\"color:#dfe3ea\">▲+4종</strong> 반등했지만, 상반기 누적은 33종(전년동기 55종 대비 ▼40%)으로 위축 기조는 여전합니다. 텐센트 계열 <strong style=\"color:#dfe3ea\">《异克斯小队》</strong>(海南腾讯互动娱乐 대리)를 제외한 나머지 7종은 모두 중소 대리사 단독 진행으로, 대형 퍼블리셔의 수입 진입이 여전히 드뭅니다."
+  },
+  "domestic_card": {
+    "subtitle": "텐센트 신실험작 + AI 네이티브 게임 등장",
+    "games": [
+      { "publisher": "텐센트",      "name": "奥星热浪",             "name_sub": "",           "desc": "인터넷 밈을 대거 녹인 2차원 오픈월드 멀티 파티게임", "genre": "2차원 파티" },
+      { "publisher": "美酷瑞(상하이)", "name": "神探夏洛克：暗夜追踪者", "name_sub": "AI 네이티브", "desc": "LLM 기반 NPC와 자유 대화·심문으로 단서를 얻는 셜록 홈즈 추리게임(3D)", "genre": "AI 추리" },
+      { "publisher": "恺英网络",     "name": "指掌仙宗",             "name_sub": "",           "desc": "카이잉 신작 · 세부 콘텐츠는 출시 전 비공개", "genre": "미공개" }
+    ],
+    "footnote": "총 163종 중 주목작 3종 소개 · 전체 목록은 NPPA 공식 발표 참조(国新出审〔2026〕1335~1497호)",
+    "analysis": "6월 국산은 163종으로 5월(154종) 대비 <strong style=\"color:#444\">▲+9종</strong>, 전년동월(147종) 대비도 <strong style=\"color:#444\">▲+16종</strong> 늘며 상반기 누적 917종(전년동기 812종 대비 ▲13%)을 기록했습니다. 텐센트의 밈 기반 파티게임, 美酷瑞의 AI 네이티브 추리게임 등 신기술·신장르 실험작이 두드러진 한 달입니다."
+  },
+  "cta": {
+    "ytd_highlight_right": "연간 발급 총량은<br>천천히 소진됩니다",
+    "headline": "2026 하반기 런칭,<br>지금 신청하세요",
+    "body_lines": [
+      "수입게임 판호는 내용심사(20영업일~, 전문가 심사 별도)에",
+      "<strong>해외 저작권 위임 서류까지 더해져 통상 수개월</strong> 걸립니다.",
+      "수입 판호는 연간 총량 한정 · 상반기 누적은 전년比 ▼40% 감소.",
+      "<strong>먼저 신청한 쪽이 남은 슬롯을 가져갑니다.</strong>"
+    ]
+  },
+  "social": [
+    { "platform": "Instagram", "handle": "@gippie_sh" },
+    { "platform": "Threads",   "handle": "@gippie_sh" },
+    { "platform": "Facebook",  "handle": "Shanghai Gippie" },
+    { "platform": "LinkedIn",  "handle": "Shanghai Gippie" }
+  ]
+}
