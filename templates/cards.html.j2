@@ -694,15 +694,15 @@
   <div id="card5" class="card">
     <div class="c5-topbar">
       <span class="white-bar"></span>
-      <span class="tl">For Global Studios</span>
+      <span class="tl">{{ cta.topbar_label | default('For Global Studios') }}</span>
     </div>
     <span class="pagenum">05 / 05</span>
 
     <div class="c5-body">
       <div class="ytd-highlight">
         <div>
-          <div class="yh-num">{{ stats.ytd.import.cnt }}종</div>
-          <div class="yh-lbl">{{ year }}년 1-{{ month }}월 수입 판호 소진</div>
+          <div class="yh-num">{{ cta.highlight_num | default(stats.ytd.import.cnt ~ '종') }}</div>
+          <div class="yh-lbl">{{ cta.highlight_label | default(year ~ '년 1-' ~ month ~ '월 수입 판호 소진') }}</div>
         </div>
         <div class="yh-right">{{ cta.ytd_highlight_right | safe }}</div>
       </div>
