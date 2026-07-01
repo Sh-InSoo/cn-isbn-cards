@@ -91,7 +91,11 @@ def _run_report(year: int, month: int, year_month: str,
     try:
         from comparison import get_comparison_counts
         logger.info("Computing MoM / YoY comparison data...")
-        comparison = get_comparison_counts(scraper, year, month)
+        current_counts = {
+            "import": results["import"]["count"],
+            "domestic": results["domestic"]["count"],
+        }
+        comparison = get_comparison_counts(scraper, year, month, current_counts)
     except Exception as e:
         logger.warning(f"Comparison data failed (cards will omit YoY/MoM): {e}")
 
