@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "month": 7,
+  "year_month": "202607",
+  "generated_at": "2026-07-24T18:00:00+08:00",
+  "results": {
+    "import":   { "count": 4,   "url": "https://www.nppa.gov.cn/", "games": [] },
+    "domestic": { "count": 193, "url": "https://www.nppa.gov.cn/", "games": [] },
+    "change":   { "count": 8,   "url": "https://www.nppa.gov.cn/", "games": [] }
+  },
+  "ytd": { "import": 37, "domestic": 1110, "change": 0 },
+  "comparison": {
+    "mom_import": -4,
+    "mom_domestic": 30,
+    "yoy_import": 7,
+    "yoy_domestic": 127,
+    "ytd_import_prev": 62,
+    "ytd_domestic_prev": 884
+  }
+}

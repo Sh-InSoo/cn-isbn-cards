@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "month": 7,
+  "year_month": "202607",
+  "import_card": {
+    "spotlight": {
+      "cn": "이번 달 수입 4종 중",
+      "en": "2종이 한국 IP",
+      "tags": [
+        "《仙境传说RO：守护永恒的爱2》— GRAVITY(한국) 원작 · 心动网络 대리",
+        "《永恒之塔：经典》— NCSOFT(한국) 원작 · 盛趣游戏(世纪华通) 대리",
+        "护核纪元(스웨덴) · 高塔旅人(미상 인디) 각 1종",
+        "수입 라인업의 정확히 절반(50%)이 한국 게임"
+      ]
+    },
+    "games": [
+      { "cn": "仙境传说RO：守护永恒的爱2", "en": "Ragnarok RO: Eternal Love 2",  "dev": "GRAVITY(한국) IP · 心动 B格猫工作室 자체개발<br>대리: 心动网络股份有限公司", "country": "🇰🇷 한국 IP · 심동 자체개발", "hl": true },
+      { "cn": "永恒之塔：经典",         "en": "AION Classic",                    "dev": "NCSOFT(한국) 원작 · 2008년 출시 MMORPG<br>대리: 盛趣游戏(世纪华通)",       "country": "🇰🇷 한국", "hl": true },
+      { "cn": "护核纪元",             "en": "Core Keeper",                     "dev": "Pugstorm(스웨덴) 개발 · Fireshine Games 유통<br>대리: 上海幻电信息科技(bilibili)", "country": "🇸🇪 스웨덴 · bilibili 대리" },
+      { "cn": "高塔旅人",             "en": "(원제 미상)",                     "dev": "해외 인디 스튜디오(미상)<br>대리: 厦门嗨哩游网络科技",                   "country": "🌐 해외 · 소형 인디" }
+    ],
+    "footer_note": "4종 전체 게임명 · 대리사 — NPPA 공식 발표 기준(国新出审〔2026〕1783~1786호)",
+    "analysis": "이번 7월 수입 판호는 단 4종에 그쳤지만, <strong style=\"color:#dfe3ea\">그중 정확히 절반인 2종이 한국 게임(IP)</strong>입니다. 라그나로크 IP 9년차 후속작 《仙境传说RO：守护永恒的爱2》(GRAVITY 원작·心动网络 대리)와 2008년 출시된 레전드 MMORPG의 클래식 서버 《永恒之塔：经典》(NCSOFT 원작·盛趣游戏 대리)까지, 좁아진 수입 문호 속에서도 한국 게임의 존재감이 뚜렷하게 드러났습니다. 나머지 2종은 글로벌 200만장 판매작 《护核纪元》(스웨덴)과 소형 인디 《高塔旅人》로, 신규 발굴형보다 '검증된 IP 재소환' 흐름이 이어졌습니다."
+  },
+  "domestic_card": {
+    "subtitle": "2026년 최다 193종 승인 — 灵游坊 3A 기대작 《影之刃零》 포함",
+    "games": [
+      { "publisher": "灵游坊",     "name": "影之刃零",           "name_sub": "최대 기대작", "desc": "인기 액션게임 《影之刃》 시리즈의 정식 3A 후속작 · 하드코어 액션에 팬 기대 집중", "genre": "3A 액션" },
+      { "publisher": "网易",       "name": "梦幻西游：再续前缘", "name_sub": "",           "desc": "18년 스테디셀러 MMORPG 《梦幻西游》 IP의 신규 파생작", "genre": "MMORPG" },
+      { "publisher": "恺英网络",   "name": "原始传奇2",         "name_sub": "",           "desc": "간판 《传奇》류 흥행 IP의 정식 후속작", "genre": "传奇류 MMORPG" },
+      { "publisher": "星辉娱乐",   "name": "守卫穹顶",           "name_sub": "",           "desc": "돔을 지키는 협동 디펜스 전략 신작", "genre": "타워디펜스" }
+    ],
+    "footnote": "총 193종 중 주목작 4종 소개 · 전체 목록은 NPPA 공식 발표 참조",
+    "analysis": "7월 국산은 193종(전월 163종 대비 <strong style=\"color:#444\">▲+30종</strong>)으로 2026년 들어 월간 최다 기록을 세웠습니다. 최대 화제작은 灵游坊의 3A 기대작 <strong style=\"color:#444\">《影之刃零》</strong>로, 국산 하드코어 액션의 새 기준으로 주목받고 있습니다. 网易 《梦幻西游：再续前缘》, 恺英网络 《原始传奇2》 등 대형 퍼블리셔의 스테디셀러 IP 후속작이 다수 포함돼 안정적인 대작 공급 흐름을 확인했습니다."
+  },
+  "cta": {
+    "topbar_label": "D-7 · CHINAJOY 2026",
+    "highlight_num": "197종",
+    "highlight_label": "7월 판호 총 승인 · 2026년 월간 최다",
+    "ytd_highlight_right": "1-7월 누적 1,147종<br>7/31–8/3 · 상하이",
+    "headline": "ChinaJoy 2026 개막 D-7,<br>与AI同游(AI와 함께 유람)",
+    "body_lines": [
+      "제23회 ChinaJoy가 7월 31일-8월 3일, 상하이 신국제엑스포센터에서 개막까지 일주일 앞으로 다가왔습니다.",
+      "<strong>올해 주제는 '与AI同游(AI와 함께 유람)'</strong> — 신설 AI·첨단기술 전시구역(E6관)에서 지능형 로봇·생성형 콘텐츠까지 확인할 수 있습니다.",
+      "전시 면적 14만㎡ 이상 · 게임 1,000종 이상 출품 — <strong>중국 게임업계 최신 소식을 가장 가까이서 접할 기회</strong>입니다.",
+      "<strong>Shanghai Gippie도 현장에 있습니다.</strong> 상하이에서 만나요."
+    ]
+  },
+  "social": [
+    { "platform": "Instagram", "handle": "@gippie_sh" },
+    { "platform": "Threads",   "handle": "@gippie_sh" },
+    { "platform": "Facebook",  "handle": "Shanghai Gippie" },
+    { "platform": "LinkedIn",  "handle": "Shanghai Gippie" }
+  ],
+  "posts": [
+    {
+      "platform": "Instagram",
+      "text": "🇨🇳 2026년 7월 중국 게임 판호(版号) 리포트\n\n국산 193종 + 수입 4종 = 총 197종 승인 — 2026년 들어 월간 최다 기록!\n전월(163종) 대비 국산만 무려 ▲30종 늘었어요.\n\n🇰🇷 특히 이번 달 수입 4종 중 정확히 절반인 2종이 한국 게임!\n라그나로크 9년차 후속작 《仙境传说RO：守护永恒的爱2》,\nAION 클래식 서버 《永恒之塔：经典》까지 한국 IP 존재감 뚜렷.\n\n🎮 국산 최대 화제작은 灵游坊의 3A 기대작 《影之刃零》!\n네티즌 반응 \"드디어 떴다\"급 열기입니다.\n\n🌐 나머지 수입 2종도 알짜 — 글로벌 200만장 판매 《护核纪元》(Core Keeper), 소형 인디 《高塔旅人》.\n\n📊 2026년 1-7월 누적 국산 1,110종 · 수입 37종 · 합계 1,147종\n전년동기 대비 국산 +26%, 수입 -40%\n\n📅 그리고 D-7! ChinaJoy 2026이 7/31-8/3 상하이에서 열립니다. 올해 주제는 '与AI同游' — 저도 현장에 있을 예정이니 상하이에서 만나요 👋\n\n#중국게임 #판호 #한국게임 #라그나로크 #AION #ChinaJoy2026 #影之刃零 #상하이 #게임업계\n\n(카드뉴스 5장 첨부)",
+      "note": "5장 카드뉴스와 함께 업로드"
+    },
+    {
+      "platform": "Facebook",
+      "text": "[중국 게임 판호 리포트 · 2026년 7월]\n\n국가신문출판서(NPPA)가 7월 23일 발표한 이번 달 게임 판호는 국산 193종 + 수입 4종, 총 197종으로 2026년 들어 월간 최다치를 기록했습니다. 전월(6월 163종) 대비 국산이 30종이나 늘어난 수치입니다.\n\n특히 눈에 띄는 대목은 수입 4종 중 정확히 절반인 2종이 한국 게임이라는 점입니다. 라그나로크 IP 9년째 인기를 이어가는 심동네트워크의 《仙境传说RO：守护永恒的爱2》(GRAVITY 원작), 그리고 2008년 출시된 명작 MMORPG의 클래식 서버 《永恒之塔：经典》(AION Classic, NCSOFT 원작·盛趣游戏 대리)까지, 좁아진 수입 문호 속에서도 한국 게임의 존재감이 뚜렷했습니다.\n\n국산 쪽 가장 주목할 신작은 灵游坊(Ling Studio)의 3A 액션게임 《影之刃零》. 기존 인기 시리즈 《影之刃》의 정식 후속작으로, 중국 하드코어 액션 장르의 새 기준이 될 것이란 기대를 받고 있습니다. 이 외에도 网易의 《梦幻西游：再续前缘》, 恺英网络의 《原始传奇2》 등 대형 퍼블리셔의 스테디셀러 IP 후속작이 다수 포함돼 안정적인 대작 공급 흐름을 보여줬습니다.\n\n나머지 수입 2종은 글로벌 판매 200만장을 넘긴 샌드박스 생존게임 《护核纪元》(원제 Core Keeper, bilibili 대리)과 소형 인디 《高塔旅人》로 채워졌습니다.\n\n2026년 1-7월 누적으로는 국산 1,110종·수입 37종, 총 1,147종이 발급됐으며 전년 동기 대비 국산은 +26%, 수입은 -40% 변화를 보였습니다.\n\n한편 7월 31일부터 8월 3일까지 상하이에서 열리는 ChinaJoy 2026도 일주일 앞으로 다가왔습니다. 올해 주제는 '与AI同游(AI와 함께 유람)'로, AI·로봇 전시구역이 신설되는 등 볼거리가 풍성할 예정입니다. Shanghai Gippie도 현장에서 소식을 전해드리겠습니다.",
+      "note": "링크/카드뉴스 첨부, 페이지 포스트용 상세 버전"
+    },
+    {
+      "platform": "LinkedIn",
+      "text": "China Game License (ISBN/版号) Report — July 2026\n\nNPPA approved 197 game licenses in July 2026 (193 domestic + 4 imported) — the highest monthly total so far this year, up 30 titles month-over-month on the domestic side.\n\nNotably, exactly half of this month's tiny import batch — 2 of 4 titles — are Korean IP: a new installment in the 9-year-running Ragnarok mobile franchise from Xindong Network, 《仙境传说RO：守护永恒的爱2》(GRAVITY IP), and a legacy-server relaunch of NCSoft's 2008 MMORPG classic AION, 《永恒之塔：经典》(via Shanda Games/Century Huatong). Even as China's import approvals stay tight, Korean IP is holding its ground.\n\nKey domestic highlight: 灵游坊(Ling Studio)'s AAA action title 《影之刃零》(Blade of Shadow: Zero), a full sequel to the studio's flagship IP — positioned as a benchmark for hardcore action games made in China. NetEase's 《梦幻西游：再续前缘》 and Kingnet's 《原始传奇2》 also landed, reflecting continued reliance on proven, long-running IP from major publishers.\n\nThe other 2 imports: Core Keeper (护核纪元, 2M+ copies sold globally, licensed by bilibili) and a small indie title, 《高塔旅人》.\n\nYear-to-date (Jan-Jul 2026): 1,110 domestic + 37 imported = 1,147 total licenses — domestic up ~26% YoY, imports down ~40% YoY, continuing the trend of tighter import approvals alongside strong domestic output.\n\nLooking ahead: ChinaJoy 2026 opens in one week (July 31 - Aug 3, Shanghai), themed '与AI同游' (Journey with AI), with a newly added AI/robotics exhibition zone. I'll be on the ground in Shanghai — happy to connect with anyone in the region.\n\n#ChinaGaming #NPPA #GameLicensing #KoreanGames #ChinaJoy2026 #GamesIndustry",
+      "note": "B2B/업계 관계자 대상, 영문"
+    },
+    {
+      "platform": "Threads",
+      "text": "7월 중국 판호 떴다 🇨🇳\n국산 193 + 수입 4 = 197종, 2026년 최다\n\n🇰🇷 수입 4종 중 절반이 한국 게임 — 라그나로크 후속작 + AION 클래식\n국산 최대 화제는 灵游坊 3A 기대작 《影之刃零》\n\n1-7월 누적 1,147종 (국산 +26% / 수입 -40% YoY)\n\n그리고 D-7... ChinaJoy 2026 상하이에서 곧 만나요 👋",
+      "note": "짧은 캐주얼 버전"
+    }
+  ]
+}

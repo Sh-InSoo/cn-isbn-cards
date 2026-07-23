@@ -1,0 +1,157 @@
+/* Shanghai Glassline — bright metropolitan editorial system */
+:root {
+  --sg-ink: #142532;
+  --sg-soft: #566b78;
+  --sg-mist: #f3f7f8;
+  --sg-line: #cbdde0;
+  --sg-jade: #00a6a6;
+  --sg-jade-deep: #087f83;
+  --sg-blue: #4f8ef7;
+  --sg-coral: #ff7547;
+  --sg-night: #102a43;
+}
+body {
+  background: #e6ecee;
+  font-family: 'Noto Sans KR','Noto Sans CJK KR','Microsoft YaHei','Malgun Gothic','Noto Color Emoji',sans-serif;
+}
+.card { isolation: isolate; color: var(--sg-ink); }
+.card::before {
+  content: ''; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background-image: linear-gradient(rgba(20,37,50,.042) 1px,transparent 1px),linear-gradient(90deg,rgba(20,37,50,.042) 1px,transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: linear-gradient(to bottom,rgba(0,0,0,.9),transparent 84%);
+  mask-image: linear-gradient(to bottom,rgba(0,0,0,.9),transparent 84%);
+}
+.card::after {
+  content: ''; position: absolute; z-index: -1; width: 620px; height: 620px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 35% 35%,rgba(255,255,255,.92) 0 7%,rgba(79,142,247,.14) 8% 30%,rgba(0,166,166,.12) 31% 54%,transparent 55%);
+}
+.cyan-bar,.gray-bar,.white-bar { width: 36px; height: 4px; background: var(--sg-jade); border-radius: 99px; }
+.pagenum { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+/* 01 — dawn, river, skyline */
+#card1 { background: linear-gradient(145deg,#fff 0 34%,#e9f5f5 68%,#d4e9ee 100%); color: var(--sg-ink); }
+#card1::after { right: -130px; top: 65px; }
+#card1 .c1-topbar { padding: 52px 60px 0; }
+#card1 .c1-topbar .tl { color: var(--sg-jade-deep); font-weight: 700; letter-spacing: 3.5px; }
+#card1 .pagenum { top: 52px; right: 60px; color: #6c808c; }
+#card1 .c1-pills { padding: 26px 60px 0; }
+#card1 .pill { color: var(--sg-ink); border-color: rgba(20,37,50,.18); background: rgba(255,255,255,.62); box-shadow: inset 0 1px rgba(255,255,255,.8); }
+#card1 .c1-body { padding: 0 60px 58px; }
+#card1 .deco-num { right: 18px; bottom: 94px; color: rgba(0,166,166,.07); font-size: 520px; letter-spacing: -40px; }
+#card1 .report-eyebrow { color: var(--sg-soft); }
+#card1 .c1-year { color: var(--sg-ink); font-size: 92px; }
+#card1 .c1-month { color: var(--sg-jade); font-size: 104px; }
+#card1 .c1-cat { color: var(--sg-ink); }
+#card1 .c1-meta { color: #5d7280; }
+#card1 .c1-footer { padding-top: 26px; border-top: 1px solid rgba(20,37,50,.15); }
+#card1 .c1-footer .brand { color: #647984; font-weight: 700; }
+#card1 .c1-body::after {
+  content: ''; position: absolute; right: -70px; bottom: 0; width: 660px; height: 190px; opacity: .5; pointer-events: none;
+  background: linear-gradient(90deg,transparent 0 5%,var(--sg-jade) 5% 5.6%,transparent 5.6% 22%,var(--sg-blue) 22% 22.5%,transparent 22.5%),linear-gradient(to top,rgba(20,37,50,.16),transparent 70%);
+  clip-path: polygon(0 100%,0 82%,8% 82%,8% 58%,13% 58%,13% 78%,21% 78%,21% 38%,24% 38%,25% 10%,26% 38%,29% 38%,29% 72%,37% 72%,37% 53%,44% 53%,44% 75%,54% 75%,54% 30%,58% 30%,58% 66%,68% 66%,68% 48%,74% 48%,74% 72%,82% 72%,82% 42%,87% 42%,87% 80%,100% 80%,100% 100%);
+}
+
+/* 02 — metro dashboard */
+#card2 { background: radial-gradient(circle at 92% 5%,rgba(0,166,166,.16),transparent 27%),linear-gradient(145deg,#fbfcfc,#edf4f5); }
+#card2::after {
+  right: -150px; bottom: -110px; width: 760px; height: 300px; border-radius: 52% 0 0 0;
+  background: repeating-radial-gradient(ellipse at 100% 100%,transparent 0 42px,rgba(0,166,166,.12) 43px 49px,transparent 50px 78px,rgba(79,142,247,.10) 79px 84px);
+}
+#card2 .c2-topbar .tag,#card4 .c4-topbar .tag { border: 0; border-radius: 99px; padding: 6px 16px; color: #fff; background: var(--sg-jade); font-weight: 700; }
+#card2 .pagenum,#card4 .pagenum { color: #71838d; }
+#card2 .c2-title,#card4 .c4-title { color: var(--sg-ink); }
+#card2 .c2-sub { color: #72838d; }
+.stat-boxes { gap: 16px; }
+.stat-box { min-height: 188px; border: 1px solid rgba(255,255,255,.9); background: rgba(255,255,255,.74); box-shadow: 0 18px 50px rgba(33,74,86,.10); border-radius: 18px; overflow: hidden; }
+.stat-box::after { content: ''; position: absolute; inset: auto 0 0; height: 5px; background: linear-gradient(90deg,var(--sg-jade),var(--sg-blue)); }
+.stat-box .sb-type { color: #6f828d; font-weight: 700; }
+.stat-box .sb-num { color: var(--sg-ink); }
+.stat-box .sb-unit { color: #71838d; }
+.stat-box .sb-mom { color: #fff; }
+.sb-mom.up { background: var(--sg-jade); }
+.sb-mom.dn { background: var(--sg-coral); }
+.yoy-block { border: 1px solid rgba(20,37,50,.1); background: rgba(255,255,255,.54); border-radius: 14px; padding: 16px 22px; margin-bottom: 20px; }
+.yoy-label,.ytd-label { color: #687b86; font-weight: 700; }
+.yoy-row { border-bottom-color: #d8e3e5; }
+.yr-lbl,.yr-to { color: var(--sg-ink); }
+.yr-from { color: #71838d; }
+.yr-arr { color: var(--sg-jade); }
+.up { color: var(--sg-jade-deep); }
+.dn { color: #dc5d3c; }
+.ytd-cells { gap: 12px; position: relative; }
+.ytd-cells::before { content: ''; position: absolute; left: 8%; right: 8%; top: 50%; height: 3px; background: linear-gradient(90deg,var(--sg-jade),var(--sg-blue)); z-index: -1; }
+.ytd-cell { border-color: #d7e5e7; background: rgba(255,255,255,.9); border-radius: 14px; box-shadow: 0 8px 26px rgba(33,74,86,.07); }
+.yc-num { color: var(--sg-jade-deep); }
+.yc-lbl { color: var(--sg-ink); }
+#card2 .footnote { color: #81919a; }
+
+/* 03 — international arrivals */
+#card3 { background: radial-gradient(circle at 90% 12%,rgba(79,142,247,.15),transparent 31%),linear-gradient(150deg,#f9fbfc,#e9f2f4); color: var(--sg-ink); }
+#card3::after { right: -280px; top: 370px; opacity: .65; }
+#card3 .c3-head { padding-top: 48px; }
+#card3 .c3-topbar .tl { color: var(--sg-jade-deep); font-weight: 700; }
+#card3 .pagenum { color: #70838e; }
+#card3 .c3-title { color: var(--sg-ink); font-size: 36px; }
+.spotlight { background: linear-gradient(130deg,rgba(255,255,255,.9),rgba(221,240,242,.8)); border-color: rgba(0,166,166,.28); border-radius: 16px; box-shadow: 0 16px 42px rgba(35,77,88,.09); }
+.spotlight::before { background: var(--sg-jade); border-radius: 0 0 8px 8px; }
+.sp-cn { color: var(--sg-jade-deep); }
+.sp-en { color: var(--sg-ink); }
+.sp-tag { color: #526875; background: rgba(255,255,255,.78); border-color: rgba(20,37,50,.1); }
+.game-tbl-hdr { border-bottom-color: #c8d9dc; }
+.game-tbl-hdr span { color: #71848e; }
+.gr { border-bottom-color: #d8e3e5; }
+.gr.hl { background: rgba(0,166,166,.075); border-left: 3px solid var(--sg-jade); }
+.gr .gn { color: #82929a; }
+.gr .gc .gcn { color: var(--sg-ink); }
+.gr .gc .gen { color: #71838d; }
+.gr .gd { color: #526671; }
+.gr .go { color: #687b86; }
+.c3-analysis { background: rgba(255,255,255,.7); border-color: #d5e2e4; border-left: 4px solid var(--sg-blue); border-radius: 12px; }
+.c3-analysis-label { color: #326cc9; }
+.c3-analysis-text { color: #536874; }
+.c3-analysis-text strong { color: var(--sg-ink) !important; }
+#card3 .c3-footer { color: #72858e; }
+
+/* 04 — creative district */
+#card4 { background: radial-gradient(circle at 4% 94%,rgba(255,117,71,.09),transparent 27%),linear-gradient(145deg,#fbfcfc,#f0f5f5); }
+#card4::after { right: -340px; bottom: -240px; }
+#card4 .c4-subtitle { color: #647883; }
+.dom-game { padding: 20px 18px; margin: 0 -18px; border-bottom-color: #d8e2e4; border-radius: 10px; }
+.dom-game:first-child { border-top-color: #d8e2e4; background: linear-gradient(90deg,rgba(0,166,166,.09),transparent 80%); border-left: 4px solid var(--sg-jade); }
+.dg-pub { color: var(--sg-jade-deep); }
+.dg-name { color: var(--sg-ink); }
+.dg-name .dg-sub,.dg-desc { color: #667985; }
+.dg-genre { color: #3f5967; background: rgba(255,255,255,.78); border-color: #cbdadd; border-radius: 99px; }
+.dom-count-box { background: linear-gradient(120deg,var(--sg-night),#153c56); border-radius: 16px; }
+.dcb-mom { background: var(--sg-jade); }
+.big-spotlight { border-color: #d7e3e5; border-radius: 16px; box-shadow: 0 16px 42px rgba(35,77,88,.08); }
+.big-spotlight::before { background: var(--sg-jade); }
+.bsp-cn,.c4-analysis-label { color: var(--sg-jade-deep); }
+.bsp-kr,.bsp-val { color: var(--sg-ink); }
+.bsp-item,.bsp-note,.c4-analysis { background: #eef5f5; }
+.c4-analysis { border-color: #d6e3e4; border-left: 4px solid var(--sg-blue); border-radius: 12px; }
+.c4-analysis-text { color: #596d78; }
+.c4-analysis-text strong { color: var(--sg-ink) !important; }
+#card4 .footnote { color: #81919a; }
+
+/* 05 — Shanghai night event poster */
+#card5 { background: radial-gradient(circle at 82% 24%,rgba(0,226,202,.22),transparent 30%),radial-gradient(circle at 12% 76%,rgba(79,142,247,.24),transparent 35%),linear-gradient(145deg,#0c2438 0%,#10344d 56%,#11283e 100%); }
+#card5::before { background-image: linear-gradient(rgba(157,228,227,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(157,228,227,.055) 1px,transparent 1px); background-size: 60px 60px; }
+#card5::after { right: -180px; bottom: -220px; background: radial-gradient(circle at 35% 35%,rgba(255,255,255,.28) 0 6%,rgba(0,226,202,.19) 7% 27%,rgba(79,142,247,.16) 28% 53%,transparent 54%); }
+#card5 .c5-topbar { padding-top: 48px; }
+#card5 .c5-topbar .tl { color: #9fe4e2; font-weight: 700; }
+#card5 .pagenum { color: rgba(212,244,244,.54); }
+#card5 .white-bar { background: #21d2c1; }
+.ytd-highlight { background: rgba(255,255,255,.075); border: 1px solid rgba(183,238,237,.18); border-radius: 16px; box-shadow: inset 0 1px rgba(255,255,255,.08); }
+.yh-num { color: #75eee2; }
+.yh-lbl { color: rgba(226,247,247,.7); }
+.yh-right { color: rgba(226,247,247,.58); }
+#card5 .c5-headline { font-size: 64px; color: #fff; text-shadow: 0 0 32px rgba(0,226,202,.13); }
+.c5-body-block { border-left: 4px solid #21d2c1; background: rgba(6,25,40,.16); border-radius: 0 12px 12px 0; padding: 14px 18px 14px 22px; }
+.c5-body-block p { color: rgba(235,249,249,.78); }
+.c5-divider { border-top-color: rgba(176,229,229,.2); }
+.c5-inquiry { color: rgba(202,239,239,.56); }
+.si { background: rgba(255,255,255,.07); border: 1px solid rgba(188,232,232,.12); border-radius: 10px; }
+.si-platform { color: rgba(200,238,238,.48); }
+.si-handle { color: #efffff; }

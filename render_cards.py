@@ -1,6 +1,8 @@
 """
 render_cards.py – Render the 5-card Instagram carousel from data using the
-HTML template (templates/cards.html.j2) + headless Chromium (Playwright).
+HTML template (templates/cards_shanghai.html.j2, the "Shanghai Glassline"
+design; the original templates/cards.html.j2 remains as --design classic)
++ headless Chromium (Playwright).
 
 This replaces the hand-tweaked claude.ai HTML with a data-driven pipeline:
 
@@ -33,7 +35,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATE_DIR = BASE_DIR / "templates"
-TEMPLATE_NAME = "cards.html.j2"
+TEMPLATE_NAME = "cards_shanghai.html.j2"     # current default design (2026-08~)
+CLASSIC_TEMPLATE_NAME = "cards.html.j2"      # legacy design, opt-in via --design classic
 
 MONTH_EN = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
             "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
@@ -129,16 +132,17 @@ def build_context(scrape: dict, editorial: dict) -> dict:
     }
 
 
-def render_html(context: dict) -> str:
+def render_html(context: dict, template_name: str = TEMPLATE_NAME) -> str:
     env = Environment(
         loader=FileSystemLoader(str(TEMPLATE_DIR)),
         autoescape=select_autoescape(["html", "j2"]),
     )
-    return env.get_template(TEMPLATE_NAME).render(**context)
+    return env.get_template(template_name).render(**context)
 
 
 # ── Playwright screenshot ────────────────────────────────────────────────────
-def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[str]:
+def screenshot_cards(html: str, out_dir: Path, year: int, month: int,
+                     filename_tag: str = "") -> list[str]:
     from playwright.sync_api import sync_playwright
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -192,7 +196,9 @@ def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[st
                 f"(tried {channels}). Last error: {last_err}")
         page = browser.new_page(viewport={"width": 1200, "height": 1400},
                                 device_scale_factor=1)
-        page.goto(html_path.as_uri(), wait_until="networkidle")
+        # External font CDNs may keep connections alive indefinitely on the NAS
+        # and in mainland China. Local CJK fallbacks are sufficient here.
+        page.goto(html_path.as_uri(), wait_until="load")
         # Ensure web fonts are fully loaded before capture
         try:
             page.evaluate("async () => { await document.fonts.ready; }")
@@ -201,7 +207,8 @@ def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[st
         page.wait_for_timeout(400)
 
         for n in range(1, 6):
-            p_out = out_dir / f"cn-isbn-{year}{month:02d}-card{n}.png"
+            p_out = out_dir / (
+                f"cn-isbn-{year}{month:02d}{filename_tag}-card{n}.png")
             page.locator(f"#card{n}").screenshot(path=str(p_out))
             paths.append(str(p_out))
 
@@ -211,12 +218,14 @@ def screenshot_cards(html: str, out_dir: Path, year: int, month: int) -> list[st
 
 # ── Public API ─────────────────────────────────────────────────────────────────
 def generate_cards_html(scrape_path: str | Path, editorial_path: str | Path,
-                        out_dir: str | Path) -> list[str]:
+                        out_dir: str | Path, template_name: str = TEMPLATE_NAME,
+                        filename_tag: str = "") -> list[str]:
     scrape = json.loads(Path(scrape_path).read_text(encoding="utf-8"))
     editorial = json.loads(Path(editorial_path).read_text(encoding="utf-8"))
     ctx = build_context(scrape, editorial)
-    html = render_html(ctx)
-    return screenshot_cards(html, Path(out_dir), ctx["year"], ctx["month"])
+    html = render_html(ctx, template_name)
+    return screenshot_cards(
+        html, Path(out_dir), ctx["year"], ctx["month"], filename_tag)
 
 
 def main():
@@ -227,6 +236,9 @@ def main():
     ap.add_argument("--editorial", help="path to editorial JSON")
     ap.add_argument("--out", default=str(BASE_DIR / "data" / "cards"),
                     help="output directory for PNGs")
+    ap.add_argument("--design", choices=["classic", "shanghai"],
+                    default="shanghai",
+                    help="visual design; classic adds a -classic filename tag")
     ap.add_argument("--html-only", action="store_true",
                     help="write rendered HTML next to --out and skip screenshots")
     args = ap.parse_args()
@@ -244,15 +256,24 @@ def main():
     if args.html_only:
         s = json.loads(Path(scrape).read_text(encoding="utf-8"))
         e = json.loads(Path(editorial).read_text(encoding="utf-8"))
-        html = render_html(build_context(s, e))
+        template_name = (
+            CLASSIC_TEMPLATE_NAME if args.design == "classic" else TEMPLATE_NAME
+        )
+        html = render_html(build_context(s, e), template_name)
         out = Path(args.out)
         out.mkdir(parents=True, exist_ok=True)
-        hp = out / "cards.html"
+        hp = out / (
+            "cards-classic.html" if args.design == "classic" else "cards.html")
         hp.write_text(html, encoding="utf-8")
         print(f"wrote {hp}")
         return
 
-    paths = generate_cards_html(scrape, editorial, args.out)
+    template_name = (
+        CLASSIC_TEMPLATE_NAME if args.design == "classic" else TEMPLATE_NAME
+    )
+    filename_tag = "-classic" if args.design == "classic" else ""
+    paths = generate_cards_html(
+        scrape, editorial, args.out, template_name, filename_tag)
     print("Generated:")
     for p in paths:
         print(f"  {p}")
