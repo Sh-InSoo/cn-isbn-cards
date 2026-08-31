@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "month": 8,
+  "year_month": "202608",
+  "import_card": {
+    "spotlight": {
+      "cn": "이번 달 수입 6종 중",
+      "en": "2종이 한국 IP",
+      "tags": [
+        "《饼干人联盟》— Devsisters(한국) 원작 · Cookie Run: Kingdom",
+        "《我独自升级：崛起》— Netmarble Neo(한국) 원작 · Solo Leveling: Arise",
+        "글로벌 로그라이크 명작 《循环勇士》(Loop Hero, Devolver Digital) 포함",
+        "5월·7월에 이어 3개월 연속 수입 라인업에 한국 게임 포함"
+      ]
+    },
+    "games": [
+      { "cn": "饼干人联盟",     "en": "Cookie Run: Kingdom", "dev": "Devsisters(한국) 개발 · 姜饼人 시리즈 대표작<br>운영: 小明太极（武汉）网络科技", "country": "🇰🇷 한국", "hl": true },
+      { "cn": "我独自升级：崛起", "en": "Solo Leveling: Arise", "dev": "Netmarble Neo(한국) 개발 · 인기 웹툰 원작<br>운영: 海南晟腾达网络科技",       "country": "🇰🇷 한국", "hl": true },
+      { "cn": "循环勇士",       "en": "Loop Hero",           "dev": "Four Quarters 개발 · Devolver Digital 유통<br>운영: 南京西木优洛网络文化", "country": "🌐 해외 · 인디" },
+      { "cn": "地堡决战",       "en": "(원제 미상)",         "dev": "해외 스튜디오(미상)<br>운영: 深圳市极享互娱科技",                          "country": "🌐 해외" },
+      { "cn": "神探历险记",     "en": "(원제 미상)",         "dev": "해외 스튜디오(미상)<br>운영: 海南临风科技",                              "country": "🌐 해외" },
+      { "cn": "希望之启航",     "en": "(원제 미상)",         "dev": "해외 스튜디오(미상)<br>운영: 上海悦腾网络科技",                          "country": "🌐 해외" }
+    ],
+    "footer_note": "6종 전체 게임명 · 운영사 — NPPA 공식 발표 기준(2026.08.28 승인)",
+    "analysis": "8월 수입 판호는 6종으로 전월(4종) 대비 <strong style=\"color:#dfe3ea\">▲+2종</strong> 소폭 반등했습니다. 그중 2종이 한국 게임(IP)으로 — 글로벌 흥행 시뮬레이션 《饼干人联盟》(Cookie Run: Kingdom, Devsisters)과 인기 웹툰 원작 액션 RPG 《我独自升级：崛起》(Solo Leveling: Arise, Netmarble Neo)가 나란히 승인됐습니다. 5월·7월에 이어 한국 IP가 수입 라인업에 꾸준히 이름을 올리는 흐름입니다. 나머지 4종 중에는 글로벌 로그라이크 명작 《循环勇士》(Loop Hero, Devolver Digital)가 눈에 띕니다."
+  },
+  "domestic_card": {
+    "subtitle": "월간 최다 재경신 209종 — 인기 국풍 IP + 해외 명작 라이선스판 대거 포함",
+    "games": [
+      { "publisher": "苍茂网络",     "name": "不良人8",             "name_sub": "화강호지불량인", "desc": "인기 국풍 애니메이션 IP '不良人' 시리즈 정식 라이선스 신작", "genre": "국풍 액션 RPG" },
+      { "publisher": "上海数龙科技", "name": "龙之谷：经典",         "name_sub": "Dragon Nest Classic", "desc": "한국 Eyedentity Games 원작 IP 클래식 서버 — 中 로컬 운영사가 국산 판호로 취득", "genre": "MMORPG" },
+      { "publisher": "碧汉网络科技", "name": "魔法门之英雄无敌III重制", "name_sub": "Heroes of M&M III Remake", "desc": "육박(Ubisoft) 서구 레전드 전략게임 IP 리메이크판 — 中 로컬 라이선스로 국산 트랙 취득", "genre": "턴제 전략" }
+    ],
+    "footnote": "총 209종 중 주목작 3종 소개 · 해외 유명 IP도 中 로컬 운영사를 통해 '국산' 트랙으로 승인됨 · 전체 목록은 NPPA 공식 발표 참조",
+    "analysis": "8월 국산은 209종(전월 193종 대비 <strong style=\"color:#444\">▲+16종</strong>)으로 2026년 들어 또다시 월간 최다 기록을 새로 썼습니다. 이번 달 특히 눈에 띄는 대목은 해외 유명 IP의 '국산 판호' 진입입니다 — 育碧(Ubisoft)의 전략게임 레전드 《魔法门之英雄无敌III》 리메이크판과 한국 Eyedentity Games 원작 《龙之谷：经典》이 모두 중국 로컬 운영사를 통해 국산 트랙으로 승인됐습니다. 국내파 화제작으로는 인기 국풍 애니 IP 정식 라이선스 신작 《不良人8》이 있습니다."
+  },
+  "cta": {
+    "ytd_highlight_right": "1-8월 누적 1,362종<br>수입 문호는 여전히 좁습니다",
+    "headline": "남은 수입 슬롯,<br>서두르세요",
+    "body_lines": [
+      "8월 수입 판호는 6종 — 전년 동월(7종) 대비 여전히 낮은 수준입니다.",
+      "<strong>1-8월 누적 수입 43종은 전년 동기(69종) 대비 ▼38%</strong> 감소했습니다.",
+      "국산은 반대로 가속 중 — 누적 1,319종, 전년比 <strong>+26%</strong>.",
+      "<strong>수입 판호는 선착순 심사, 지금 준비하는 팀이 유리합니다.</strong>"
+    ]
+  },
+  "social": [
+    { "platform": "Instagram", "handle": "@gippie_sh" },
+    { "platform": "Threads",   "handle": "@gippie_sh" },
+    { "platform": "Facebook",  "handle": "Shanghai Gippie" },
+    { "platform": "LinkedIn",  "handle": "Shanghai Gippie" }
+  ],
+  "posts": [
+    {
+      "platform": "Instagram",
+      "text": "🇨🇳 2026년 8월 중국 게임 판호(版号) 리포트\n\n국산 209종 + 수입 6종 = 총 215종 승인 — 2026년 들어 또 한번 월간 최다 기록!\n전월(193종) 대비 국산만 ▲16종 늘었어요.\n\n🇰🇷 이번 달 수입 6종 중 2종이 한국 게임!\n글로벌 흥행작 《饼干人联盟》(Cookie Run: Kingdom, Devsisters),\n웹툰 원작 《我独自升级：崛起》(Solo Leveling: Arise, Netmarble)까지.\n5월·7월에 이어 3개월 연속 한국 IP 등장!\n\n🎮 국산 쪽 눈에 띄는 대목 — 해외 유명 IP가 '국산 판호'로!\n育碧(Ubisoft)의 《魔法门之英雄无敌III重制》,\n한국 원작 《龙之谷：经典》 모두 中 로컬 운영사를 통해 국산 트랙 취득.\n인기 국풍 IP 정식 신작 《不良人8》도 화제.\n\n📊 2026년 1-8월 누적 국산 1,319종 · 수입 43종 · 합계 1,362종\n전년동기 대비 국산 +26%, 수입 -38%\n\n#중국게임 #판호 #한국게임 #CookieRunKingdom #SoloLeveling #상하이 #게임업계\n\n(카드뉴스 5장 첨부)",
+      "note": "5장 카드뉴스와 함께 업로드"
+    },
+    {
+      "platform": "Facebook",
+      "text": "[중국 게임 판호 리포트 · 2026년 8월]\n\n국가신문출판서(NPPA)가 8월 31일 발표한 이번 달 게임 판호는 국산 209종 + 수입 6종, 총 215종으로 2026년 들어 또 한 번 월간 최다치를 경신했습니다. 전월(7월 193종) 대비 국산이 16종 늘었습니다.\n\n특히 눈에 띄는 대목은 수입 6종 중 2종이 한국 게임이라는 점입니다. 글로벌 흥행 시뮬레이션 《饼干人联盟》(Cookie Run: Kingdom, Devsisters 개발)과 인기 웹툰 원작 액션 RPG 《我独自升级：崛起》(Solo Leveling: Arise, Netmarble Neo 개발)가 나란히 승인되며, 5월·7월에 이어 3개월 연속 한국 IP가 수입 라인업에 이름을 올렸습니다.\n\n국산 쪽에서는 흥미로운 현상이 포착됩니다. 育碧(Ubisoft)의 전략게임 레전드 《魔法门之英雄无敌III》 리메이크판과 한국 Eyedentity Games 원작 《龙之谷：经典》이 모두 중국 로컬 운영사를 통해 '국산' 판호 트랙으로 승인됐습니다. 해외 유명 IP가 현지 라이선스 형태로 국산 판호에 편입되는 흐름이 뚜렷해지고 있습니다. 국내파 화제작으로는 인기 국풍 애니메이션 IP 정식 라이선스 신작 《不良人8》이 있습니다.\n\n2026년 1-8월 누적으로는 국산 1,319종·수입 43종, 총 1,362종이 발급됐으며 전년 동기 대비 국산은 +26%, 수입은 -38% 변화를 보였습니다. 수입 판호의 좁은 문은 여전히 이어지고 있습니다.",
+      "note": "링크/카드뉴스 첨부, 페이지 포스트용 상세 버전"
+    },
+    {
+      "platform": "LinkedIn",
+      "text": "China Game License (ISBN/版号) Report — August 2026\n\nNPPA approved 215 game licenses in August 2026 (209 domestic + 6 imported) — yet another monthly high for 2026, up 16 titles month-over-month on the domestic side.\n\nNotably, 2 of the 6 imported titles are Korean IP: Devsisters' global hit Cookie Run: Kingdom (饼干人联盟) and Netmarble Neo's webtoon-based action RPG Solo Leveling: Arise (我独自升级：崛起) — marking the third month in a row (May, July, August) with Korean IP represented in the import batch.\n\nAn interesting pattern on the domestic side: Ubisoft's legendary strategy IP Might & Magic: Heroes III Remake (魔法门之英雄无敌III重制) and South Korea's Dragon Nest Classic (龙之谷：经典, originally Eyedentity Games) both cleared the DOMESTIC license track via local Chinese operating entities — a reminder that license classification tracks the operating entity's registration, not the IP's origin. A notable homegrown release: 《不良人8》, a licensed installment of the popular Chinese donghua IP.\n\nYear-to-date (Jan-Aug 2026): 1,319 domestic + 43 imported = 1,362 total licenses — domestic up ~26% YoY, imports down ~38% YoY. The gap between domestic supply and the tightly capped import track continues to widen.\n\n#ChinaGaming #NPPA #GameLicensing #KoreanGames #CookieRunKingdom #SoloLeveling #GamesIndustry",
+      "note": "B2B/업계 관계자 대상, 영문"
+    },
+    {
+      "platform": "Threads",
+      "text": "8월 중국 판호 떴다 🇨🇳\n국산 209 + 수입 6 = 215종, 또 월간 최다\n\n🇰🇷 수입 6종 중 2종이 한국 게임 — 饼干人联盟(Cookie Run Kingdom) + 我独自升级：崛起(Solo Leveling Arise)\n3개월 연속 한국 IP 등장 중\n\n국산 판호에 育碧 英雄无敌III 리메이크 + 龙之谷 클래식도?!\n(해외 IP도 中 로컬 운영사면 국산 트랙)\n\n1-8월 누적 1,362종 (국산 +26% / 수입 -38% YoY)",
+      "note": "짧은 캐주얼 버전"
+    }
+  ]
+}

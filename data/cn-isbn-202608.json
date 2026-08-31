@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "year": 2026,
+  "month": 8,
+  "year_month": "202608",
+  "generated_at": "2026-09-01T12:00:00+09:00",
+  "results": {
+    "import":   { "count": 6,   "url": "https://www.nppa.gov.cn/bsfw/jggs/yxspjg/jkwlyxspxx/202601/t20260126_947910.html", "games": [] },
+    "domestic": { "count": 209, "url": "https://www.nppa.gov.cn/bsfw/jggs/yxspjg/gcwlyxspxx/202608/t20260831_1005702.html", "games": [] },
+    "change":   { "count": 12,  "url": "https://www.nppa.gov.cn/bsfw/jggs/yxspjg/yxspbgxx/202601/t20260126_947941.html", "games": [] }
+  },
+  "ytd": { "import": 43, "domestic": 1319, "change": 0 },
+  "comparison": {
+    "mom_import": 2,
+    "mom_domestic": 16,
+    "yoy_import": 7,
+    "yoy_domestic": 166,
+    "ytd_import_prev": 69,
+    "ytd_domestic_prev": 1050
+  }
+}
