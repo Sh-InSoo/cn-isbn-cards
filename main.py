@@ -16,9 +16,20 @@ Because the editorial layer is produced by the routine AFTER the Phase-1 push,
 the cards arrive on the next NAS run, not the same one — the daily cron retries
 until the editorial JSON shows up.
 
-Exits cleanly (code 0) without doing work if:
-  - Day < START_DAY
-  - The three announcements aren't all published yet (Phase 1 retries tomorrow)
+Day-of-month behaviour (fixed 2026-09-01 after an incident: NPPA published
+2026-08 data on the 31st; that day's run apparently found nothing yet and
+deferred to "tomorrow" — but tomorrow was the 1st of a new month, which used
+to hard-exit before START_DAY and had no way back to August until the 22nd of
+the FOLLOWING month. See README/CLAUDE.md session notes for the postmortem.):
+  - Phase 1 (scrape) targets the current month once day >= START_DAY, same as
+    before. On top of that, during the first START_DAY-1 days of a NEW month
+    it ALSO retries the *previous* month's report if that one was never sent —
+    this is the grace window that closes the incident's gap.
+  - Phase 3 (cards) is no longer gated by day-of-month at all: it is cheap and
+    idempotent (local marker file + a GitHub HEAD-ish fetch), so it re-checks
+    every day for the current month and a short lookback of previous months,
+    picking up the editorial JSON whenever the routine (or a manual push)
+    produces it — instead of waiting for day 22 to roll around again.
 """
 
 from __future__ import annotations
@@ -111,6 +122,33 @@ def _run_report(year: int, month: int, year_month: str,
     return True
 
 
+def _prev_year_month(year: int, month: int) -> tuple[int, int]:
+    return (year, month - 1) if month > 1 else (year - 1, 12)
+
+
+def _report_targets(year: int, month: int, day: int) -> list[tuple[int, int]]:
+    """(year, month) pairs Phase 1 should attempt this run.
+
+    Normally just the current month, once we're in its announcement window
+    (day >= START_DAY). During the grace window at the start of a NEW month
+    (day < START_DAY) we ALSO retarget the previous month, in case its report
+    never went out — e.g. NPPA published on the last day of that month's
+    window, after the day's run already found nothing and deferred."""
+    if day >= Config.START_DAY:
+        return [(year, month)]
+    return [_prev_year_month(year, month)]
+
+
+def _card_lookback_targets(year: int, month: int, months: int = 3) -> list[tuple[int, int]]:
+    """(year, month) pairs Phase 3 should check this run — the current month
+    plus a short lookback, so a report sent late in one month still gets its
+    cards retried daily instead of waiting for the next day-22 window."""
+    targets = [(year, month)]
+    for _ in range(months - 1):
+        targets.append(_prev_year_month(*targets[-1]))
+    return targets
+
+
 def main():
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
@@ -123,44 +161,45 @@ def main():
     if os.environ.get("TEST_DAY"):
         day = int(os.environ["TEST_DAY"])
 
-    year_month = f"{year:04d}{month:02d}"
-
     logger.info("=" * 60)
     logger.info(f"cn-isbn  |  {now.strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info("=" * 60)
-
-    if day < Config.START_DAY:
-        logger.info(
-            f"Today is the {day}th. Monitoring starts on the "
-            f"{Config.START_DAY}th. Exiting."
-        )
-        return
 
     Config.validate()
     state = StateManager(Config.STATE_FILE)
     slack = SlackClient(Config.SLACK_BOT_TOKEN, Config.SLACK_CHANNEL)
 
-    # ── Phase 1: report & handoff (once per month) ──────────────────────────
-    if not state.already_sent(year_month):
-        if not _run_report(year, month, year_month, state, slack):
-            return  # not all three published yet — retry on a later run
-        state.mark_sent(year_month)
-        logger.info(f"cn-isbn report complete for {year}/{month:02d}")
-    else:
-        logger.info(
-            f"Report for {year_month} already sent — checking card status..."
-        )
+    # ── Phase 1: report & handoff ────────────────────────────────────────────
+    for t_year, t_month in _report_targets(year, month, day):
+        t_year_month = f"{t_year:04d}{t_month:02d}"
+        if state.already_sent(t_year_month):
+            continue
+        if day < Config.START_DAY:
+            logger.info(
+                f"Grace window (day {day} < {Config.START_DAY}): retrying "
+                f"unsent report for {t_year_month}..."
+            )
+        if _run_report(t_year, t_month, t_year_month, state, slack):
+            state.mark_sent(t_year_month)
+            logger.info(f"cn-isbn report complete for {t_year}/{t_month:02d}")
+        else:
+            logger.info(f"Report for {t_year_month} not ready yet — will retry.")
 
     # ── Phase 3: rich cards (waits for the routine's editorial JSON) ─────────
-    # Skippable via SKIP_CARDS for text-only runs / debugging.
+    # No day-of-month gate — cheap and idempotent, so it's checked every run
+    # for the current month and a short lookback, until each month's cards
+    # are published. Skippable via SKIP_CARDS for text-only runs / debugging.
     if os.environ.get("SKIP_CARDS", "").lower() in ("1", "true", "yes"):
         logger.info("[cards] SKIP_CARDS set — skipping card publish.")
         return
 
     try:
         from card_publisher import publish_cards_if_ready
-        status = publish_cards_if_ready(year, month, slack=slack)
-        logger.info(f"[cards] {status}")
+        for t_year, t_month in _card_lookback_targets(year, month):
+            t_year_month = f"{t_year:04d}{t_month:02d}"
+            status = publish_cards_if_ready(t_year, t_month, slack=slack)
+            if status != "skipped-no-scrape":
+                logger.info(f"[cards] {t_year_month}: {status}")
     except Exception as e:
         logger.error(f"[cards] publish failed: {e}", exc_info=True)
 
