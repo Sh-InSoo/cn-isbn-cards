@@ -22,10 +22,15 @@ services:
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
-      # NAS-local code (not in GitHub)
+      # repo code (mounted so updates don't always need an image rebuild).
+      # NOTE: all of these are bind-mounted from the NAS's local checkout,
+      # NOT auto-synced from GitHub (the NAS has no git) — after pulling a
+      # fix on the desktop/cloud side, it must be re-fetched here too, e.g.
+      # `curl -o <file>.py https://raw.githubusercontent.com/Sh-InSoo/cn-isbn-cards/main/<file>.py`
+      # (see the 2026-09-01 incident in README/CLAUDE.md: a July fix to
+      # comparison.py sat unpushed to the NAS for two months).
       - ./scraper.py:/app/scraper.py
       - ./state_manager.py:/app/state_manager.py
-      # repo code (mounted so updates don't always need an image rebuild)
       - ./main.py:/app/main.py
       - ./config.py:/app/config.py
       - ./slack_client.py:/app/slack_client.py

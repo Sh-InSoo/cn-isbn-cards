@@ -138,6 +138,23 @@ NAS 환경변수:
 > Phase 3 카드는 Phase 2(routine)가 editorial JSON을 push한 **다음** 실행에서 발행된다.
 > 따라서 텍스트 리포트보다 보통 하루 늦게 카드가 올라온다(daily cron이 재시도).
 
+### 코드 배포 — NAS는 git pull이 아니라 수동 반영
+
+NAS의 `*.py`는 전부 `docker-compose.yml`의 bind mount로 로컬 파일을 그대로 쓴다.
+**GitHub에 커밋·푸시해도 NAS엔 자동 반영되지 않는다.** 코드를 고쳤으면 NAS에서 매번:
+
+```bash
+curl -o <파일>.py https://raw.githubusercontent.com/Sh-InSoo/cn-isbn-cards/main/<파일>.py
+```
+
+로 다시 받아야 한다(이미지 재빌드 불필요 — bind mount라 즉시 반영).
+
+> ⚠ **2026-09-01 인시던트**: `comparison.py`의 MoM 델타 계산 수정(2026-07-01 커밋)이
+> 두 달간 NAS에 반영되지 않아, 8월 카드의 전월비 수치가 틀리게 발행됐었다. `scraper.py`/
+> `state_manager.py`는 원래 이 repo에 없었는데(각주 참고), 같은 문제를 막기 위해
+> 이 커밋부터 git에 편입시켰다. **코드를 고칠 때마다 이 섹션의 curl 명령으로 NAS에도
+> 반드시 반영할 것.**
+
 ## 클라우드 routine
 
 `https://claude.ai/code/routines` 에서 관리. cron `0 10 22-31 * *` (UTC) = 매월
