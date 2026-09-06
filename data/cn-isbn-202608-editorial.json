@@ -15,12 +15,45 @@
       ]
     },
     "games": [
-      { "cn": "饼干人联盟",     "en": "Cookie Run: Tower of Adventures", "dev": "Devsisters(한국) 개발 · 쿠키런: 모험의탑 중국판 · 儒意景秀 발행<br>운영: 小明太极（武汉）网络科技", "country": "🇰🇷 한국", "hl": true },
-      { "cn": "我独自升级：崛起", "en": "Solo Leveling: Arise", "dev": "Netmarble Neo(한국) 개발 · 인기 웹툰 원작<br>운영: 海南晟腾达网络科技",       "country": "🇰🇷 한국", "hl": true },
-      { "cn": "希望之启航",     "en": "씰 온라인 IP 모바일 (Seal Online)", "dev": "플레이위드(한국) IP · 恺英网络 개발 · 4분기 출시 목표<br>운영: 上海悦腾网络科技", "country": "🇰🇷 한국", "hl": true },
-      { "cn": "循环勇士",       "en": "Loop Hero",           "dev": "Four Quarters 개발 · Devolver Digital 유통<br>운영: 南京西木优洛网络文化", "country": "🌐 해외 · 인디" },
-      { "cn": "地堡决战",       "en": "(원제 미상)",         "dev": "해외 스튜디오(미상)<br>운영: 深圳市极享互娱科技",                          "country": "🌐 해외" },
-      { "cn": "神探历险记",     "en": "(원제 미상)",         "dev": "해외 스튜디오(미상)<br>운영: 海南临风科技",                              "country": "🌐 해외" }
+      {
+        "cn": "饼干人联盟",
+        "en": "Cookie Run: Tower of Adventures",
+        "dev": "Devsisters(한국) 개발 · 쿠키런: 모험의탑 중국판 · 儒意景秀 발행<br>운영: 小明太极（武汉）网络科技",
+        "country": "🇰🇷 한국",
+        "hl": true
+      },
+      {
+        "cn": "我独自升级：崛起",
+        "en": "Solo Leveling: Arise",
+        "dev": "Netmarble Neo(한국) 개발 · 인기 웹툰 원작<br>운영: 海南晟腾达网络科技",
+        "country": "🇰🇷 한국",
+        "hl": true
+      },
+      {
+        "cn": "希望之启航",
+        "en": "씰 온라인 IP 모바일 (Seal Online)",
+        "dev": "플레이위드(한국) IP · 恺英网络 개발 · 4분기 출시 목표<br>운영: 上海悦腾网络科技",
+        "country": "🇰🇷 한국",
+        "hl": true
+      },
+      {
+        "cn": "循环勇士",
+        "en": "Loop Hero",
+        "dev": "Four Quarters 개발 · Devolver Digital 유통<br>운영: 南京西木优洛网络文化",
+        "country": "🌐 해외 · 인디"
+      },
+      {
+        "cn": "地堡决战",
+        "en": "(원제 미상)",
+        "dev": "해외 스튜디오(미상)<br>운영: 深圳市极享互娱科技",
+        "country": "🌐 해외"
+      },
+      {
+        "cn": "神探历险记",
+        "en": "(원제 미상)",
+        "dev": "해외 스튜디오(미상)<br>운영: 海南临风科技",
+        "country": "🌐 해외"
+      }
     ],
     "footer_note": "6종 전체 게임명 · 운영사 — NPPA 공식 발표 기준(2026.08.28 승인)",
     "analysis": "8월 수입 판호는 6종으로 전월(4종) 대비 <strong style=\"color:#dfe3ea\">▲+2종</strong> 소폭 반등했습니다. 그중 3종이 한국 IP로 — Devsisters의 《饼干人联盟》(쿠키런: 모험의탑 중국판, 儒意景秀 발행), 웹툰 원작 액션 RPG 《我独自升级：崛起》(Solo Leveling: Arise, Netmarble Neo), 플레이위드 씰 온라인 IP 모바일 《希望之启航》(恺英网络 개발, 4분기 출시 목표)가 함께 승인됐습니다. 5월 《奇迹：新纪元》, 6월 《夜鸦》, 7월 RO·AION에 이어 4개월 연속이며, 2026년 한국 IP 판호는 누적 12종입니다. 나머지 3종 중에는 글로벌 로그라이크 명작 《循环勇士》(Loop Hero, Devolver Digital)가 눈에 띕니다."
@@ -28,9 +61,27 @@
   "domestic_card": {
     "subtitle": "2026년 월간 최다 재경신 209종 — 국풍 IP 신작 + Ubisoft 中 스튜디오 리메이크 포함",
     "games": [
-      { "publisher": "苍茂网络",     "name": "不良人8",             "name_sub": "화강호지불량인", "desc": "인기 국풍 애니메이션 IP '不良人' 시리즈 정식 라이선스 신작", "genre": "국풍 액션 RPG" },
-      { "publisher": "上海数龙科技", "name": "龙之谷：经典",         "name_sub": "Dragon Nest Classic", "desc": "盛趣 계열 数龙이 자사 한국 자회사 Eyedentity Games 원작 IP의 클래식판을 국산 판호로 취득", "genre": "MMORPG" },
-      { "publisher": "碧汉网络科技", "name": "魔法门之英雄无敌III 重制", "name_sub": "Heroes of M&M III Remake", "desc": "育碧(Ubisoft) 자체 리메이크 — 育碧成都·上海 스튜디오 개발이라 국산 트랙 (2027 출시 예정)", "genre": "턴제 전략" }
+      {
+        "publisher": "苍茂网络",
+        "name": "不良人8",
+        "name_sub": "화강호지불량인",
+        "desc": "인기 국풍 애니메이션 IP '不良人' 시리즈 정식 라이선스 신작",
+        "genre": "국풍 액션 RPG"
+      },
+      {
+        "publisher": "上海数龙科技",
+        "name": "龙之谷：经典",
+        "name_sub": "Dragon Nest Classic",
+        "desc": "盛趣 계열 数龙이 자사 한국 자회사 Eyedentity Games 원작 IP의 클래식판을 국산 판호로 취득",
+        "genre": "MMORPG"
+      },
+      {
+        "publisher": "碧汉网络科技",
+        "name": "魔法门之英雄无敌III 重制",
+        "name_sub": "Heroes of M&M III Remake",
+        "desc": "育碧(Ubisoft) 자체 리메이크 — 育碧成都·上海 스튜디오 개발이라 국산 트랙 (2027 출시 예정)",
+        "genre": "턴제 전략"
+      }
     ],
     "footnote": "총 209종 중 주목작 3종 소개 · 판호 분류는 IP 국적이 아닌 개발·운영 주체 기준 — 中 스튜디오 개발 해외 IP는 '국산' 트랙 · 전체 목록은 NPPA 공식 발표 참조",
     "analysis": "8월 국산은 209종(전월 193종 대비 <strong style=\"color:#444\">▲+16종</strong>)으로 2026년 들어 또다시 월간 최다 기록을 새로 썼습니다. 이번 달 눈에 띄는 대목은 해외 IP의 '국산 판호' 등장입니다 — 育碧(Ubisoft)이 gamescom 2026에서 공개한 《魔法门之英雄无敌III 重制》는 育碧成都·上海 스튜디오가 개발하는 자체 리메이크라 국산 트랙으로 승인됐고, 盛趣 계열 数龙은 자사 한국 자회사 Eyedentity Games 원작 《龙之谷：经典》을 국산으로 취득했습니다. 판호 분류는 IP 국적이 아니라 개발·운영 주체 기준임을 보여주는 사례입니다. 국내파 화제작으로는 인기 국풍 애니 IP 정식 라이선스 신작 《不良人8》이 있습니다."
@@ -49,10 +100,22 @@
     ]
   },
   "social": [
-    { "platform": "Instagram", "handle": "@gippie_sh" },
-    { "platform": "Threads",   "handle": "@gippie_sh" },
-    { "platform": "Facebook",  "handle": "Shanghai Gippie" },
-    { "platform": "LinkedIn",  "handle": "Shanghai Gippie" }
+    {
+      "platform": "Instagram",
+      "handle": "@gippie_sh"
+    },
+    {
+      "platform": "Threads",
+      "handle": "@gippie_sh"
+    },
+    {
+      "platform": "Facebook",
+      "handle": "Shanghai Gippie"
+    },
+    {
+      "platform": "LinkedIn",
+      "handle": "Shanghai Gippie"
+    }
   ],
   "posts": [
     {
@@ -69,6 +132,11 @@
       "platform": "LinkedIn",
       "text": "China Game License (ISBN/版号) Report — August 2026\n\nNPPA approved 215 game licenses in August 2026 (209 domestic + 6 imported) — yet another monthly high for 2026, up 16 titles month-over-month on the domestic side.\n\nNotably, 3 of the 6 imported titles are Korean IP: Devsisters' CookieRun: Tower of Adventures (饼干人联盟, published locally by Ruyi Jingxiu), Netmarble Neo's webtoon-based action RPG Solo Leveling: Arise (我独自升级：崛起), and a mobile title based on Playwith's Seal Online IP (希望之启航, developed by Kingnet, targeting a Q4 launch) — marking the fourth month in a row (May: MU New Era, June: Night Crows, July: RO/AION Classic, August) with Korean IP in the import batch, and bringing 2026's Korean-IP licenses to 12.\n\nAn interesting pattern on the domestic side: Ubisoft's Heroes of Might & Magic III remake (魔法门之英雄无敌III 重制, unveiled at gamescom 2026, developed by Ubisoft Chengdu and Ubisoft Shanghai, due 2027) cleared the DOMESTIC track because it is built in China, and Shengqu's Dragon Nest Classic (龙之谷：经典, originally by its Korean subsidiary Eyedentity Games) did the same — a reminder that license classification tracks the developing/operating entity, not the IP's origin. A notable homegrown release: 《不良人8》, a licensed installment of the popular Chinese donghua IP.\n\nYear-to-date (Jan-Aug 2026): 1,319 domestic + 43 imported = 1,362 total licenses — domestic up ~26% YoY, imports down ~38% YoY.\n\nOne takeaway for Korean studios eyeing China: August's 209 domestic licenses went to 209 different operators — no company received two, and Tencent/NetEase affiliates received zero (2 of 565 across Jun-Aug). Most names on the monthly list are companies Korean studios have never heard of, while the large and mid-size publishers already have more in-house and locally sourced titles than they can ship. Rather than waiting on the top-tier publishers, it may be time to rethink how you find a partner — one that will actually fight for your game.\n\n#ChinaGaming #NPPA #GameLicensing #KoreanGames #CookieRun #SoloLeveling #SealOnline #GamePublishing #GamesIndustry",
       "note": "B2B/업계 관계자 대상, 영문"
+    },
+    {
+      "platform": "LinkedIn (KR)",
+      "text": "[중국 게임 판호(版号) 리포트 · 2026년 8월]\n\n중국 국가신문출판서(NPPA)가 2026년 8월 게임 판호로 국산 209종 + 수입 6종, 총 215종을 승인했습니다. 2026년 월간 최다 기록이며, 전월(193종) 대비 국산이 16종 늘었습니다.\n\n주목할 점은 수입 6종 중 3종이 한국 IP라는 사실입니다. Devsisters 《쿠키런: 모험의탑》(饼干人联盟, 儒意景秀 현지 발행), Netmarble Neo의 웹툰 원작 액션 RPG 《나 혼자만 레벨업: 어라이즈》(我独自升级：崛起), 그리고 플레이위드 씰 온라인 IP 기반 모바일(希望之启航, 恺英网络 개발, 4분기 출시 목표)이 함께 승인되며 5월(MU: New Era)·6월(Night Crows)·7월(RO·AION Classic)에 이어 4개월 연속 한국 IP가 수입 라인업에 이름을 올렸습니다. 2026년 누적 한국 IP 판호는 12종입니다.\n\n국산 쪽에서는 판호 분류 기준을 보여주는 사례가 눈에 띕니다. Ubisoft가 gamescom 2026에서 공개한 《魔法门之英雄无敌III 重制》는 育碧成都·上海 스튜디오가 개발하는 자체 리메이크(2027 출시 예정)라 국산 트랙으로 승인됐고, 盛趣 계열 数龙은 자사 한국 자회사 Eyedentity Games 원작 《龙之谷：经典》을 국산으로 취득했습니다. 판호 분류는 IP의 국적이 아니라 개발·운영 주체의 등록 기준을 따른다는 점을 다시 확인시켜 줍니다.\n\n2026년 1-8월 누적: 국산 1,319종 + 수입 43종 = 1,362종. 전년 동기 대비 국산 +26%, 수입 -38%.\n\n중국 진출을 검토 중인 한국 스튜디오에 드리는 시사점 하나: 8월 국산 209종은 209개의 서로 다른 운영사에 배분됐습니다. 한 회사도 2종을 받지 못했고, 텐센트·넷이즈 계열은 단 한 종도 없었습니다(6~8월 565종 중 2종). 매달 판호 명단의 대부분은 한국에 잘 알려지지 않은 회사들이며, 대형·중형 퍼블리셔는 이미 자체 개발작과 중국 내 소싱작만으로 라인업이 포화 상태입니다. 상위 퍼블리셔만 기다리기보다, 내 게임을 위해 실제로 뛰어줄 파트너를 찾는 방법부터 재검토할 시점입니다.\n\n#중국게임 #NPPA #판호 #한국게임 #쿠키런 #나혼렙 #씰온라인 #중국퍼블리싱 #게임업계",
+      "note": "LinkedIn 영문판의 한국어 버전 — 국내 업계 관계자·한국어 사용 네트워크 대상"
     },
     {
       "platform": "Threads",
