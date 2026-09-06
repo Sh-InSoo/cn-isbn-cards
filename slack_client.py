@@ -73,16 +73,33 @@ class SlackClient:
             raise
 
     # ── Instagram card images ─────────────────────────────────────────────────
-    def upload_cards(self, year: int, month: int, card_paths: list[str]):
-        """Upload 5 card images as a single grouped Slack message."""
+    def upload_cards(
+        self,
+        year: int,
+        month: int,
+        card_paths: list[str],
+        *,
+        thread_ts: str | None = None,
+        initial_comment: str | None = None,
+        title_suffix: str = "",
+    ):
+        """Upload 5 card images as a single grouped Slack message.
+
+        thread_ts       reply into an existing thread (e.g. the original card
+                        post) instead of starting a new top-level message —
+                        used for corrections / re-publishes.
+        initial_comment override the default headline text.
+        title_suffix    appended to each file title, e.g. " 정정본 v2".
+        """
         if not card_paths:
             logger.warning("No card paths provided — skipping upload")
             return
 
-        initial_comment = (
-            f":frame_with_picture:  *{year}년 {month}월 중국 판호 인스타 리포트 (5장)*\n"
-            f"NPPA 수입 · 국산 · 변경 현황 카드뉴스 — @gippie_sh"
-        )
+        if initial_comment is None:
+            initial_comment = (
+                f":frame_with_picture:  *{year}년 {month}월 중국 판호 인스타 리포트 (5장)*\n"
+                f"NPPA 수입 · 국산 · 변경 현황 카드뉴스 — @gippie_sh"
+            )
 
         # Build file_uploads list
         file_uploads = []
@@ -93,21 +110,29 @@ class SlackClient:
             file_uploads.append({
                 "file": path,
                 "filename": Path(path).name,
-                "title": f"{year}년 {month}월 판호 리포트 {i:02d}/05",
+                "title": f"{year}년 {month}월 판호 리포트{title_suffix} {i:02d}/05",
             })
 
         if not file_uploads:
             logger.error("No valid card files found")
             return
 
+        kwargs = dict(
+            channel=self.channel,
+            initial_comment=initial_comment,
+            file_uploads=file_uploads,
+            # files_upload_v2 does getUploadURL → PUT → completeUploadExternal;
+            # the NAS→Slack path (GFW) has been seen to exceed 300s on the last
+            # step (2026-09-06), so give it room.
+            timeout=600,
+        )
+        if thread_ts:
+            kwargs["thread_ts"] = thread_ts
+
         try:
-            result = self.client.files_upload_v2(
-                channel=self.channel,
-                initial_comment=initial_comment,
-                file_uploads=file_uploads,
-                timeout=300,
-            )
-            logger.info(f"Uploaded {len(file_uploads)} cards to {self.channel}")
+            result = self.client.files_upload_v2(**kwargs)
+            where = f"{self.channel}" + (f" (thread {thread_ts})" if thread_ts else "")
+            logger.info(f"Uploaded {len(file_uploads)} cards to {where}")
             return result
         except SlackApiError as e:
             logger.error(f"Card upload failed: {e.response['error']}")

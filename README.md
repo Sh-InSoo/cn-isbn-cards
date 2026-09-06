@@ -127,6 +127,26 @@ NAS에는 git이 없으므로 핸드오프는 git이 아니라 **HTTPS**로 한�
 (클라우드 routine은 git이 있는 환경이라 editorial JSON을 평소대로 git push 한다 —
 git-less 제약은 NAS에만 적용된다.)
 
+### 정정 재발행 (`card_publisher.py --republish`)
+
+editorial JSON을 고친 뒤 이미 발행된 달의 카드를 다시 올릴 때. 일일 스케줄은
+`.published-YYYYMM` 마커가 있으면 그 달을 건드리지 않으므로 수동으로 실행한다
+(NAS 컨테이너 안에서 실행해야 봇 토큰·NAS chromium이 쓰인다):
+
+```bash
+cd /volume1/docker/cn-isbn && /usr/local/bin/docker compose run --rm cn-isbn \
+  python card_publisher.py --month 202608 --republish \
+  --thread-ts 1788204224.727639 --label v3 --expect "3종이 한국 IP"
+```
+
+- `--thread-ts` — 원본 카드 게시물의 ts. 지정하면 새 글 대신 그 스레드에 답글로 올림.
+- `--label` — 파일 제목·헤드라인에 붙는 버전 태그(`정정본 v3`). `--comment`로 헤드라인 전체 교체 가능.
+- `--expect` — fetch한 editorial JSON에 반드시 들어 있어야 하는 문자열. push 직후
+  GitHub API가 구버전을 돌려줄 때 그대로 올라가는 사고를 막는다.
+- `--no-upload` — 렌더만(데스크탑에서 `APP_BASE_DIR=.`로 미리보기).
+- 마커는 그대로 두므로 이후 일일 실행이 다시 올리지 않는다. Slack MCP에는 파일
+  업로드·삭제 도구가 없어 이전 버전 파일 정리는 Slack에서 직접 해야 한다.
+
 NAS 환경변수:
 - `GITHUB_TOKEN` — fine-grained PAT, 이 레포에 `contents: read & write`. 스크랩 JSON
   push에 사용. **미설정 시 로컬 저장만 하고 push는 건너뜀**(routine이 그 달을 못 봄).
